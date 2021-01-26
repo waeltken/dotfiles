@@ -1,0 +1,14 @@
+antigen use oh-my-zsh
+antigen bundle git
+antigen bundle git-extras
+antigen bundle safe-paste
+antigen bundle common-aliases
+antigen bundle themes
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle docker
+
+antigen theme ys
+
+antigen apply
+

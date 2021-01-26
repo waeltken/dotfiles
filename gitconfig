@@ -1,0 +1,20 @@
+[alias]
+	co = checkout
+	lg = log
+	st = status
+	ci = commit
+  msg = show -s --format=%B
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[apply]
+	whitespace = nowarn
+[format]
+	pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
+[core]
+	excludesfile = ~/.gitignore_global
+
+# Allow local customizations in the .gitconfig_local file
+[include]
+	path = ~/.gitconfig_local

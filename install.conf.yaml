@@ -1,0 +1,22 @@
+- defaults:
+    link:
+      relink: true
+
+- clean: ["~"]
+
+- create:
+    - ~/workspace
+
+- link:
+    ~/.bin: bin
+    ~/.shell: shell
+    ~/.gitconfig: gitconfig
+    ~/.gitignore_global: gitignore_global
+    ~/.spacemacs: spacemacs
+    ~/.vimrc.before.local: vimrc.before.local
+    ~/.vimrc.bundles.local: vimrc.bundles.local
+    ~/.vimrc.local: vimrc.local
+    ~/.zshrc: zshrc
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
