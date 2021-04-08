@@ -1,7 +1,7 @@
 [alias]
 	co = checkout
 	lg = log --graph --pretty=format:'%Cred%h%Creset (%ad) %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=relative
-	hist = log --graph --full-history --all --pretty=format:'%Cred%h%Creset (%ad) %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
+	hist = log --graph --full-history --all --pretty=format:'%Cred%h%Creset (%ad) %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=relative
 	st = status
 	ci = commit
   msg = show -s --format=%B
