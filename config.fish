@@ -12,6 +12,8 @@ if status is-login
 end
 
 fundle plugin 'oh-my-fish/plugin-thefuck'
+fundle plugin 'danhper/fish-ssh-agent'
+
 fundle init
 
 set fish_greeting
