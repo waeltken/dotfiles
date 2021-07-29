@@ -19,6 +19,7 @@
     ~/.vimrc.local: vimrc.local
     ~/.zshrc: zshrc
     ~/.config/fish/config.fish: config.fish
+    ~/.ssh/config: ssh/config
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
