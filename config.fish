@@ -5,7 +5,7 @@ if status is-interactive
 
   fundle plugin 'oh-my-fish/plugin-thefuck'
   fundle plugin 'oh-my-fish/plugin-pj'
-  fundle plugin 'jethrokuan/z'
+  #fundle plugin 'jethrokuan/z'
   fundle plugin 'danhper/fish-ssh-agent'
   fundle plugin 'oh-my-fish/plugin-linuxbrew'
 
@@ -19,6 +19,7 @@ if status is-login
   source ~/.shell/aliases.sh
   fish_add_path ~/.bin/
   fish_add_path ~/.yarn/bin/
+  fish_add_path ~/.krew/bin
 end
 
 set fish_greeting

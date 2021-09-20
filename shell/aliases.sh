@@ -1,5 +1,6 @@
 # Aliases
 alias g=git
+alias glg="git log"
 alias dc=docker-compose
 alias go=richgo
 alias gst="git status"
