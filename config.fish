@@ -1,6 +1,7 @@
 if status is-interactive
   # Commands to run in interactive sessions can go here
   set -gx GPG_TTY (tty)
+  set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 0
   if not functions -q fundle; eval (curl -sfL https://git.io/fundle-install); end
 
   fundle plugin 'oh-my-fish/plugin-thefuck'
@@ -8,6 +9,9 @@ if status is-interactive
   #fundle plugin 'jethrokuan/z'
   fundle plugin 'danhper/fish-ssh-agent'
   fundle plugin 'oh-my-fish/plugin-linuxbrew'
+  #fundle plugin 'jorgebucaran/nvm.fish'
+  fundle plugin 'FabioAntunes/fish-nvm'
+  fundle plugin 'edc/bass'
 
   set -U PROJECT_PATHS ~/workspace
 
@@ -26,3 +30,6 @@ set fish_greeting
 
 direnv hook fish | source
 eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+
+starship init fish | source
+

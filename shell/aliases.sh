@@ -11,4 +11,4 @@ alias gst="git status"
 alias c=code
 alias kc=kubectl
 alias tf=terraform
-
+#alias docker=podman
