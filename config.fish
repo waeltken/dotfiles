@@ -32,4 +32,5 @@ direnv hook fish | source
 eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 
 starship init fish | source
+kubectl completion fish | source
 
