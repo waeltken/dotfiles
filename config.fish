@@ -34,3 +34,7 @@ eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 starship init fish | source
 kubectl completion fish | source
 
+# pnpm
+set -gx PNPM_HOME "/home/clwaltke/.local/share/pnpm"
+set -gx PATH "$PNPM_HOME" $PATH
+# pnpm end
