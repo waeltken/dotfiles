@@ -12,6 +12,7 @@ if status is-interactive
   #fundle plugin 'jorgebucaran/nvm.fish'
   fundle plugin 'FabioAntunes/fish-nvm'
   fundle plugin 'edc/bass'
+  fundle plugin 'lig/fish-gitmoji' --url 'https://codeberg.org/lig/fish-gitmoji.git'
 
   set -U PROJECT_PATHS ~/workspace
 
