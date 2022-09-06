@@ -4,19 +4,7 @@ if status is-interactive
   set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 0
   if not functions -q fundle; eval (curl -sfL https://git.io/fundle-install); end
 
-  fundle plugin 'oh-my-fish/plugin-thefuck'
-  #fundle plugin 'oh-my-fish/plugin-pj'
-  #fundle plugin 'jethrokuan/z'
-  fundle plugin 'danhper/fish-ssh-agent'
-  fundle plugin 'oh-my-fish/plugin-linuxbrew'
-  #fundle plugin 'jorgebucaran/nvm.fish'
-  fundle plugin 'FabioAntunes/fish-nvm'
-  fundle plugin 'edc/bass'
-  fundle plugin 'lig/fish-gitmoji' --url 'https://codeberg.org/lig/fish-gitmoji.git'
-
   set -U PROJECT_PATHS ~/workspace
-
-  fundle init
 end
 
 if status is-login
@@ -34,6 +22,8 @@ eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 
 starship init fish | source
 kubectl completion fish | source
+
+set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 1
 
 # pnpm
 set -gx PNPM_HOME "/home/clwaltke/.local/share/pnpm"

@@ -19,6 +19,7 @@
     ~/.vimrc.local: vimrc.local
     ~/.zshrc: zshrc
     ~/.config/fish/config.fish: config.fish
+    ~/.config/fish/fish_plugins: fish_plugins
     ~/.config/terminator/config: terminator.config
     ~/.ssh/config: ssh/config
 
