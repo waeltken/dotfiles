@@ -17,8 +17,14 @@ end
 
 set fish_greeting
 
+set -l os (uname)
+if test "$os" = Darwin
+    eval (/opt/homebrew/bin/brew shellenv)
+else if test "$os" = Linux
+    eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+end
+
 direnv hook fish | source
-eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 
 starship init fish | source
 kubectl completion fish | source
