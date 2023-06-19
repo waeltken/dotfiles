@@ -27,4 +27,4 @@
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
     # - [chsh -s $(which zsh), Making zsh the default shell]
-    - [fish -c 'fisher update', Installing fish plugins]
+    - [fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher update', Installing fisher and plugins]
