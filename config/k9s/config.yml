@@ -1,5 +1,5 @@
 k9s:
-  refreshRate: 2
+  refreshRate: 1
   maxConnRetry: 5
   enableMouse: false
   headless: false
@@ -48,7 +48,7 @@ k9s:
       portForwardAddress: localhost
     cluster-dev:
       namespace:
-        active: argocd
+        active: all
         lockFavorites: false
         favorites:
         - argocd
@@ -59,7 +59,7 @@ k9s:
         - all
         - default
       view:
-        active: deployment
+        active: nodes
       featureGates:
         nodeShell: false
       shellPod:
@@ -102,6 +102,6 @@ k9s:
       critical: 90
       warn: 70
     memory:
-      critical: 90
-      warn: 70
+      critical: 95
+      warn: 85
   screenDumpDir: /tmp/k9s-screens-clwaltke
