@@ -21,6 +21,7 @@
     ~/.zshrc: zshrc
     ~/.config/asciinema: config/asciinema
     ~/.config/fish: config/fish
+    ~/.config/k9s: config/k9s
     ~/.config/terminator: config/terminator
     ~/.ssh/config: ssh/config
     ~/.nvmrc: nvmrc
