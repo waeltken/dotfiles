@@ -6,6 +6,7 @@
 
 - create:
     - ~/workspace
+    - ~/.config
 
 - link:
     ~/.actrc: actrc
@@ -20,7 +21,9 @@
     ~/.zshrc: zshrc
     ~/.config/fish/config.fish: config.fish
     ~/.config/fish/fish_plugins: fish_plugins
-    ~/.config/terminator/config: terminator.config
+    ~/.config/asciinema: config/asciinema
+    ~/.config/fish: config/fish
+    ~/.config/terminator: config/terminator
     ~/.ssh/config: ssh/config
     ~/.nvmrc: nvmrc
 
