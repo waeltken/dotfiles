@@ -1,14 +1,18 @@
+set -l os (uname)
+if test "$os" = Darwin
+    eval (/opt/homebrew/bin/brew shellenv)
+else if test "$os" = Linux
+    eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+end
+
+set -gx PATH "/home/clwaltke/.local/bin" $PATH
+
 if status is-interactive
   # Commands to run in interactive sessions can go here
   set -gx GPG_TTY (tty)
-  set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 0
-
-  if not functions -q fundle; eval (curl -sfL https://git.io/fundle-install); end
 
   set -U PROJECT_PATHS ~/workspace
   set -gx DISPLAY :0
-
-  eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 
   # Shell plugins and completions
   navi widget fish | source
@@ -32,7 +36,7 @@ set fish_greeting
 
 
 set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 1
-set -gx PATH "/home/clwaltke/.local/bin" $PATH
+
 
 # pnpm
 set -gx PNPM_HOME "/home/clwaltke/.local/share/pnpm"
