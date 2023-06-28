@@ -19,8 +19,6 @@
     ~/.vimrc.bundles.local: vimrc.bundles.local
     ~/.vimrc.local: vimrc.local
     ~/.zshrc: zshrc
-    ~/.config/fish/config.fish: config.fish
-    ~/.config/fish/fish_plugins: fish_plugins
     ~/.config/asciinema: config/asciinema
     ~/.config/fish: config/fish
     ~/.config/terminator: config/terminator
