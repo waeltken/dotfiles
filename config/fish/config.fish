@@ -1,8 +1,11 @@
 set -l os (uname)
+set -l machine (uname -n)
 if test "$os" = Darwin
     eval (/opt/homebrew/bin/brew shellenv)
 else if test "$os" = Linux
-    eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+    if test "$machine" != nzxt-arch
+			eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+		end
 end
 
 set -gx PATH "/home/clwaltke/.local/bin" $PATH
