@@ -39,7 +39,7 @@ set fish_greeting
 
 
 set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 1
-
+set -gx AZURE_DEV_COLLECT_TELEMETRY 1
 
 # pnpm
 set -gx PNPM_HOME "/home/clwaltke/.local/share/pnpm"
