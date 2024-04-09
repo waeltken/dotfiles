@@ -31,6 +31,7 @@ if status is-interactive
   fish_add_path ~/.yarn/bin/
   fish_add_path ~/.krew/bin/
   fish_add_path ~/.jbang/bin/
+  fish_add_path ~/.cargo/bin/
 end
 
 if status is-login
