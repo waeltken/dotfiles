@@ -29,6 +29,7 @@ if status is-interactive
   fish_add_path ~/.bin/
   fish_add_path ~/.local/bin/
   fish_add_path ~/.yarn/bin/
+  fish_add_path ~/.krew/bin/
   fish_add_path ~/.jbang/bin/
 end
 
