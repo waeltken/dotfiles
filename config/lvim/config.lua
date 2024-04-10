@@ -4,6 +4,7 @@
 -- Discord: https://discord.com/invite/Xb9B4Ny
 
 lvim.plugins = {
-  "srcery-colors/srcery-vim"
+  { "srcery-colors/srcery-vim" },
+  { "github/copilot.vim" }
 }
 lvim.colorscheme = "srcery"
