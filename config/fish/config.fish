@@ -45,6 +45,8 @@ set -gx EDITOR lvim
 set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 1
 set -gx AZURE_DEV_COLLECT_TELEMETRY 1
 
+set -gx DOTNET_ROOT "/home/linuxbrew/.linuxbrew/opt/dotnet/libexec"
+
 # pnpm
 set -gx PNPM_HOME "/home/clwaltke/.local/share/pnpm"
 set -gx PATH "$PNPM_HOME" $PATH
