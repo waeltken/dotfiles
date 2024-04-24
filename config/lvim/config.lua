@@ -5,6 +5,48 @@
 
 lvim.plugins = {
   { "srcery-colors/srcery-vim" },
-  { "github/copilot.vim" }
+  { "Pocco81/auto-save.nvim" },
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+      suggestion = { enabled = true },
+      panel = { enabled = false },
+      })
+    end,
+  },
+  {
+    "zbirenbaum/copilot-cmp",
+    after = { "copilot.lua", "nvim-cmp" },
+    config = function ()
+      require("copilot_cmp").setup()
+    end
+  },
 }
 lvim.colorscheme = "srcery"
+
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_assume_mapped = true
+vim.g.copilot_tab_fallback = ""
+
+local autosave = require("auto-save")
+autosave.setup()
+
+local dap = require('dap')
+dap.configurations.python = {
+  {
+    type = 'python';
+    request = 'launch';
+    name = "Launch file";
+    program = "${file}";
+  },
+}
+
+dap.adapters.python = {
+  type = 'executable';
+  command = 'python';
+  args = { '-m', 'debugpy.adapter' };
+}
+
