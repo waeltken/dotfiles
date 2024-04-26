@@ -3,8 +3,9 @@ set -l machine (uname -n)
 if test "$os" = Darwin
     eval (/opt/homebrew/bin/brew shellenv)
 else if test "$os" = Linux
-    if test "$machine" != nzxt-arch
-			eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+    # if not nzxt-arch or if not bluefin.local
+    if test "$machine" != nzxt-arch -a "$machine" != bluefin-dx
+        # eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 		end
 end
 
