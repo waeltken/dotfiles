@@ -5,7 +5,7 @@ if test "$os" = Darwin
 else if test "$os" = Linux
     # if not nzxt-arch or if not bluefin.local
     if test "$machine" != nzxt-arch -a "$machine" != bluefin-dx
-        # eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+        eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 		end
 end
 
