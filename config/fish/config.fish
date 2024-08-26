@@ -22,6 +22,7 @@ if status is-interactive
   navi widget fish | source
   direnv hook fish | source
   starship init fish | source
+  atuin init fish | source
   kubectl completion fish | source
 
   # Add aliases
