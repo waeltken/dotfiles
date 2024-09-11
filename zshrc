@@ -32,4 +32,5 @@ fi
 
 # Add JBang to environment
 alias j!=jbang
-export PATH="$HOME/.jbang/bin:$PATH"
+export PATH="$HOME/.jbang/bin:$HOME/.jbang/currentjdk/bin:$PATH"
+export JAVA_HOME=$HOME/.jbang/currentjdk
