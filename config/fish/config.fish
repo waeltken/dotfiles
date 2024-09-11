@@ -3,10 +3,7 @@ set -l machine (uname -n)
 if test "$os" = Darwin
     eval (/opt/homebrew/bin/brew shellenv)
 else if test "$os" = Linux
-    # if not nzxt-arch or if not bluefin.local
-    if test "$machine" != nzxt-arch -a "$machine" != bluefin-dx
-        eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-		end
+    eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 end
 
 set -gx PATH "/home/clwaltke/.local/bin" $PATH
@@ -43,6 +40,9 @@ end
 set fish_greeting
 
 set -gx EDITOR lvim
+
+set -gx AZURE_ACCOUNT_NAME cwaltkenprivate
+set -gx RESTIC_REPOSITORY azure:arch:/
 
 set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 1
 set -gx AZURE_DEV_COLLECT_TELEMETRY 1

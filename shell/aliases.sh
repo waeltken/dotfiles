@@ -13,3 +13,6 @@ alias kc=kubectl
 alias tf=terraform
 #alias docker=podman
 alias rzi="rm -rf **/*Zone.Identifier"
+alias vi=lvim
+alias vim=lvim
+
