@@ -1,3 +1,17 @@
+[user]
+  name = {{ .name }}
+  email = {{ .email }}
+{{- if .signing_key }}
+  signingkey = {{ .signing_key }}
+[commit]
+  gpgsign = true
+[tag]
+  gpgsign = true
+{{- end }}
+[gpg]
+  program = gpg
+[credential]
+  helper = cache
 [alias]
 	co = checkout
 	lg = log --graph --pretty=format:'%Cred%h%Creset (%ad) %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=relative
@@ -16,10 +30,6 @@
 [core]
 	excludesfile = ~/.gitignore_global
 	editor = code --wait
-
-# Allow local customizations in the .gitconfig_local file
-[include]
-	path = ~/.gitconfig_local
 [merge]
 	tool = vscode
 [mergetool "vscode"]

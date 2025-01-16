@@ -32,5 +32,7 @@ fi
 
 # Add JBang to environment
 alias j!=jbang
-export PATH="$HOME/.jbang/bin:$HOME/.jbang/currentjdk/bin:$PATH"
-export JAVA_HOME=$HOME/.jbang/currentjdk
+export PATH="$HOME/.jbang/bin:$PATH"
+# added by github/training-manual class setup
+test -f "/home/clwaltke/.trainingmanualrc" && source "/home/clwaltke/.trainingmanualrc"
+

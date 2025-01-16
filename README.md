@@ -1,17 +1,15 @@
 # Clemens Wältken dotfiles
 
-My dotfiles. A maschup of other dotfile repositories in github.
+My dotfiles. A mashup of useful configurations and scripts I've collected over the years. Now using chezmoi to manage them.
 
 ## Installation
 
-Run the following commands in your terminal. It will prompt you before it does anything destructive.
+Run the following commands in your terminal.
 
 ```terminal
-git clone git://github.com/waeltken/dotfiles ~/.dotfiles
-cd ~/.dotfiles
-./install
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply waeltken
 ```
 
 After installing, open a new terminal window to see the effects.
 
-Feel free to customize the to match your preference.
+Feel free to customize to match your preference.
