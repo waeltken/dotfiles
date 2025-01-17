@@ -1,15 +1,17 @@
 set -l os (uname)
 set -l machine (uname -n)
+set -l arch (uname -m)
+
 if test "$os" = Darwin
     eval (/opt/homebrew/bin/brew shellenv)
 else if test "$os" = Linux
     # if not nzxt-arch or if not bluefin.local
-    if test "$machine" != nzxt-arch -a "$machine" != bluefin-dx
+    if test "$machine" != nzxt-arch -a "$machine" != bluefin-dx -a "$arch" != aarch64
         eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-		end
+    end
 end
 
-set -gx PATH "/home/clwaltke/.local/bin" $PATH
+set -gx PATH "{{ .chezmoi.homeDir }}/.local/bin" $PATH
 
 if status is-interactive
   # Commands to run in interactive sessions can go here
@@ -27,7 +29,7 @@ if status is-interactive
 
   # Add aliases
   source ~/.shell/aliases.sh
-	# Add paths
+  # Add paths
   fish_add_path ~/.bin/
   fish_add_path ~/.local/bin/
   fish_add_path ~/.yarn/bin/
@@ -50,6 +52,6 @@ set -gx AZURE_DEV_COLLECT_TELEMETRY "no"
 set -gx DOTNET_ROOT "/home/linuxbrew/.linuxbrew/opt/dotnet/libexec"
 
 # pnpm
-set -gx PNPM_HOME "/home/clwaltke/.local/share/pnpm"
+set -gx PNPM_HOME "{{ .chezmoi.homeDir }}/.local/share/pnpm"
 set -gx PATH "$PNPM_HOME" $PATH
 # pnpm end
