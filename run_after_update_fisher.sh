@@ -1,2 +1,2 @@
 #!/bin/bash
-fish -c "fisher update"
+fish -c "curl -sL https://git.io/fisher | source && fisher update"

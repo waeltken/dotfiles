@@ -30,6 +30,9 @@ if status is-interactive
   # Add aliases
   source ~/.shell/aliases.sh
   # Add paths
+	{{ if eq .chezmoi.os "darwin" }}
+  fish_add_path ~/bin/
+	{{ end }}
   fish_add_path ~/.bin/
   fish_add_path ~/.local/bin/
   fish_add_path ~/.yarn/bin/
