@@ -9,6 +9,7 @@ alias gst="git status"
 #alias man="man -Hfirefox"
 #alias open="gio open"
 alias c=code
+alias cm=chezmoi
 alias kc=kubectl
 alias tf=terraform
 #alias docker=podman
