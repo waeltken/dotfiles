@@ -2,13 +2,14 @@ set -l os (uname)
 set -l machine (uname -n)
 set -l arch (uname -m)
 
-if test "$os" = Darwin
-    eval (/opt/homebrew/bin/brew shellenv)
-else if test "$os" = Linux
-    # if not nzxt-arch or if not bluefin.local
-    if test "$machine" != nzxt-arch -a "$machine" != bluefin-dx -a "$arch" != aarch64
-        eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-    end
+{{ if eq .chezmoi.os "darwin" -}}
+eval (/opt/homebrew/bin/brew shellenv)
+{{ end -}}
+if test "$os" = Linux
+	# if not nzxt-arch or if not bluefin.local
+	if test "$machine" != nzxt-arch -a "$machine" != bluefin-dx -a "$arch" != aarch64
+			eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+	end
 end
 
 set -gx PATH "{{ .chezmoi.homeDir }}/.local/bin" $PATH
@@ -56,13 +57,10 @@ set -gx EDITOR lvim
 set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 1
 set -gx AZURE_DEV_COLLECT_TELEMETRY "no"
 
-set -gx DOTNET_ROOT "/home/linuxbrew/.linuxbrew/opt/dotnet/libexec"
-
 # pnpm
 set -gx PNPM_HOME "{{ .chezmoi.homeDir }}/.local/share/pnpm"
 set -gx PATH "$PNPM_HOME" $PATH
 # pnpm end
 
-# configure npm global install location
-set -gx NPM_CONFIG_PREFIX ~/.npm-global
-fish_add_path ~/.npm-global/bin
+# Set nvm default version
+set -gx nvm_default_version lts/jod

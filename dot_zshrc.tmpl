@@ -1,0 +1,26 @@
+# Load homebrew
+{{ if eq .chezmoi.os "darwin" -}}
+eval "$(/opt/homebrew/bin/brew shellenv)"
+{{ end -}}
+
+# Load Antigen
+source ~/.shell/antigen_init.sh
+
+# Aliases
+source ~/.shell/aliases.sh
+
+# Hook direnv
+eval "$(direnv hook zsh)"
+
+# Add thefuck as alias
+eval "$(thefuck --alias)"
+
+# Add JBang to environment
+alias j!=jbang
+export PATH="$HOME/.jbang/bin:$PATH"
+# added by github/training-manual class setup
+test -f "/home/clwaltke/.trainingmanualrc" && source "/home/clwaltke/.trainingmanualrc"
+
+# Add NVM to environment
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
