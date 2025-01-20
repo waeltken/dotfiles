@@ -62,3 +62,7 @@ set -gx DOTNET_ROOT "/home/linuxbrew/.linuxbrew/opt/dotnet/libexec"
 set -gx PNPM_HOME "{{ .chezmoi.homeDir }}/.local/share/pnpm"
 set -gx PATH "$PNPM_HOME" $PATH
 # pnpm end
+
+# configure npm global install location
+set -gx NPM_CONFIG_PREFIX ~/.npm-global
+fish_add_path ~/.npm-global/bin
