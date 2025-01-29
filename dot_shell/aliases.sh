@@ -10,6 +10,7 @@ alias gst="git status"
 #alias open="gio open"
 alias c=code
 alias cm=chezmoi
+alias cz=chezmoi
 alias kc=kubectl
 alias tf=terraform
 #alias docker=podman
