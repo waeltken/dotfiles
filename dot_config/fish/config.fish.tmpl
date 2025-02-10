@@ -27,6 +27,11 @@ if status is-interactive
   starship init fish | source
   atuin init fish | source
   kubectl completion fish | source
+	
+	# load pack completions
+	if type -q pack
+		source (pack completion --shell fish)
+	end
 
   # Add aliases
   source ~/.shell/aliases.sh
