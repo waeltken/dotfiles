@@ -15,3 +15,4 @@ alias kc=kubectl
 alias tf=terraform
 #alias docker=podman
 alias rzi="rm -rf **/*Zone.Identifier"
+alias py=python3
