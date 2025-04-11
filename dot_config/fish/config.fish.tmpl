@@ -22,6 +22,7 @@ if status is-interactive
   set -gx DISPLAY :0
 
   # Shell plugins and completions
+  {{ if eq .chezmoi.arch "amd64" }}
   navi widget fish | source
   direnv hook fish | source
   starship init fish | source
@@ -32,6 +33,7 @@ if status is-interactive
 	if type -q pack
 		source (pack completion --shell fish)
 	end
+  {{ end }}
 
   # Add aliases
   source ~/.shell/aliases.sh
