@@ -12,8 +12,6 @@ if test "$os" = Linux
 	end
 end
 
-set -gx PATH "{{ .chezmoi.homeDir }}/.local/bin" $PATH
-
 if status is-interactive
   # Commands to run in interactive sessions can go here
   set -gx GPG_TTY (tty)
@@ -47,6 +45,7 @@ if status is-interactive
   fish_add_path ~/.krew/bin/
   fish_add_path ~/.jbang/bin/
   fish_add_path ~/.cargo/bin/
+  fish_add_path {{ .chezmoi.homeDir }}/.local/bin
 end
 
 if status is-login
@@ -66,7 +65,7 @@ set -gx AZURE_DEV_COLLECT_TELEMETRY "no"
 
 # pnpm
 set -gx PNPM_HOME "{{ .chezmoi.homeDir }}/.local/share/pnpm"
-set -gx PATH "$PNPM_HOME" $PATH
+fish_add_path $PNPM_HOME
 # pnpm end
 
 # Set nvm default version
