@@ -11,37 +11,45 @@
 [gpg]
   program = gpg
 [credential]
+{{- if eq .chezmoi.os "linux" }}
+{{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+  helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
+{{- else }}
   helper = cache
+{{- end }}
+{{- else }}
+  helper = cache
+{{- end }}
 [alias]
-	co = checkout
-	lg = log --graph --pretty=format:'%Cred%h%Creset (%ad) %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=relative
-	hist = log --graph --full-history --all --pretty=format:'%Cred%h%Creset (%ad) %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=relative
-	st = status
-	ci = commit
+  co = checkout
+  lg = log --graph --pretty=format:'%Cred%h%Creset (%ad) %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=relative
+  hist = log --graph --full-history --all --pretty=format:'%Cred%h%Creset (%ad) %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=relative
+  st = status
+  ci = commit
   msg = show -s --format=%B
 [color]
-	diff = auto
-	status = auto
-	branch = auto
+  diff = auto
+  status = auto
+  branch = auto
 [apply]
-	whitespace = nowarn
+  whitespace = nowarn
 [format]
-	pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
+  pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
 [core]
-	excludesfile = ~/.gitignore_global
-	editor = code --wait
+  excludesfile = ~/.gitignore_global
+  editor = code --wait
 [merge]
-	tool = vscode
+  tool = vscode
 [mergetool "vscode"]
-	cmd = "code --wait "
+  cmd = "code --wait "
 [diff]
-	tool = vscode
+  tool = vscode
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 [init]
-	defaultBranch = main
+  defaultBranch = main
 [pull]
-	rebase = true
+  rebase = true
