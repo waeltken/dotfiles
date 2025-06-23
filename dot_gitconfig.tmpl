@@ -13,7 +13,7 @@
 [credential]
 {{- if eq .chezmoi.os "linux" }}
 {{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
-  helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
+  helper = cache
 {{- else }}
   helper = cache
 {{- end }}
