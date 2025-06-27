@@ -1,4 +1,4 @@
 {{ if or (eq .chezmoi.os "darwin") (ne .chezmoi.arch "arm64") -}}
-fnm env --use-on-cd --shell fish | source
+fnm env --use-on-cd --version-file-strategy=recursive --shell fish | source
 {{ end -}}
 
