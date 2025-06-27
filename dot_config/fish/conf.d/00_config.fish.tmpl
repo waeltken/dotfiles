@@ -1,16 +1,8 @@
-set -l os (uname)
-set -l machine (uname -n)
-set -l arch (uname -m)
-
 {{ if eq .chezmoi.os "darwin" -}}
 eval (/opt/homebrew/bin/brew shellenv)
+{{ else if eq .chezmoi.os "linux" -}}
+eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 {{ end -}}
-if test "$os" = Linux
-	# if not nzxt-arch or if not bluefin.local
-	if test "$machine" != nzxt-arch -a "$machine" != bluefin-dx -a "$arch" != aarch64
-			eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-	end
-end
 
 if status is-interactive
   # Commands to run in interactive sessions can go here
