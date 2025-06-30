@@ -1,2 +1,5 @@
+{{- if eq .chezmoi.os "windows" -}}
+{{- else -}}
 #!/bin/bash
 fish -c "curl -sL https://git.io/fisher | source && fisher update"
+{{- end -}}
