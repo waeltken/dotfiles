@@ -5,5 +5,6 @@ function tfinit
     -backend-config="storage_account_name=tfstatecwcontoso" \
     -backend-config="container_name=tfstate" \
     -backend-config="key=$key" \
+    -backend-config="use_azuread_auth=true" \
     $argv
   end
