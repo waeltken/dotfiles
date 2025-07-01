@@ -22,6 +22,15 @@ return {
     }
   },
 
+  -- Autosave.nvmi
+  {
+    "Pocco81/auto-save.nvim",
+    lazy = false,
+    config = function()
+      require("auto-save").setup {}
+    end,
+  },
+
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     lazy = false,
