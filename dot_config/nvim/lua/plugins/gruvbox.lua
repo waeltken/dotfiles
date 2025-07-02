@@ -2,7 +2,6 @@ return {
   {
     "ellisonleao/gruvbox.nvim",
     name = "gruvbox",
-    lazy = true,
     config = function()
       vim.o.background = "dark"
       vim.g.gruvbox_contrast_dark = "hard"
