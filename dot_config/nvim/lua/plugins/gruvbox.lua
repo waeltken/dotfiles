@@ -1,6 +1,6 @@
 return {
   {
-    "morhetz/gruvbox.nvim",
+    "ellisonleao/gruvbox.nvim",
     name = "gruvbox",
     lazy = true,
     config = function()
