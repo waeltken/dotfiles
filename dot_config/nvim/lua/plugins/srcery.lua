@@ -5,7 +5,6 @@ return {
     lazy = true,
     name = "srcery",
     config = function()
-      vim.o.background = "dark"
       vim.g.srcery_italic_comments = true
       vim.g.srcery_italic_keywords = true
       vim.g.srcery_italic_functions = true
@@ -14,7 +13,6 @@ return {
       vim.g.srcery_italic_numbers = true
       vim.g.srcery_italic_preproc = true
       vim.g.srcery_italic_types = true
-      vim.cmd.colorscheme("srcery")
     end,
   },
 }
