@@ -5,43 +5,43 @@ eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 {{ end -}}
 
 if status is-interactive
-  # Commands to run in interactive sessions can go here
-  set -gx GPG_TTY (tty)
+    # Commands to run in interactive sessions can go here
+    set -gx GPG_TTY (tty)
 
-  set -U PROJECT_PATHS ~/workspace
-  set -gx DISPLAY :0
+    set -U PROJECT_PATHS ~/workspace
+    set -gx DISPLAY :0
 
-  # Shell plugins and completions
-  {{ if eq .chezmoi.arch "amd64" }}
-  navi widget fish | source
-  direnv hook fish | source
-  starship init fish | source
-  atuin init fish | source
-  kubectl completion fish | source
-	
-	# load pack completions
-	if type -q pack
-		source (pack completion --shell fish)
-	end
-  {{ end }}
+    # Shell plugins and completions
+    {{ if eq .chezmoi.arch "amd64" }}
+    navi widget fish | source
+    direnv hook fish | source
+    starship init fish | source
+    atuin init fish | source
+    kubectl completion fish | source
 
-  # Add aliases
-  source ~/.shell/aliases.sh
-  # Add paths
-	{{ if eq .chezmoi.os "darwin" }}
-  fish_add_path ~/bin/
-	{{ end }}
-  fish_add_path ~/.bin/
-  fish_add_path ~/.local/bin/
-  fish_add_path ~/.yarn/bin/
-  fish_add_path ~/.krew/bin/
-  fish_add_path ~/.jbang/bin/
-  fish_add_path ~/.cargo/bin/
-  fish_add_path {{ .chezmoi.homeDir }}/.local/bin
+    # load pack completions
+    if type -q pack
+        source (pack completion --shell fish)
+    end
+    {{ end }}
+
+    # Add aliases
+    source ~/.shell/aliases.sh
+    # Add paths
+    {{ if eq .chezmoi.os "darwin" }}
+    fish_add_path ~/bin/
+    {{ end }}
+    fish_add_path ~/.bin/
+    fish_add_path ~/.local/bin/
+    fish_add_path ~/.yarn/bin/
+    fish_add_path ~/.krew/bin/
+    fish_add_path ~/.jbang/bin/
+    fish_add_path ~/.cargo/bin/
+    fish_add_path {{ .chezmoi.homeDir }}/.local/bin
 end
 
 if status is-login
-  # Commands to run in login shells can go here
+    # Commands to run in login shells can go here
 end
 
 set fish_greeting
@@ -53,10 +53,9 @@ set -gx EDITOR nvim
 {{ end }}
 
 set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 1
-set -gx AZURE_DEV_COLLECT_TELEMETRY "no"
+set -gx AZURE_DEV_COLLECT_TELEMETRY no
 
 # pnpm
 set -gx PNPM_HOME "{{ .chezmoi.homeDir }}/.local/share/pnpm"
 fish_add_path $PNPM_HOME
 # pnpm end
-
