@@ -37,9 +37,11 @@
   pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
 [core]
   excludesfile = ~/.gitignore_global
-  editor = code --wait
+  editor = nvim
 [merge]
   tool = vscode
+[mergetool "nvim"]
+  cmd = 'nvim -d -c "wincmd l" -c "norm ]c" "$LOCAL" "$MERGED" "$REMOTE"'
 [mergetool "vscode"]
   cmd = "code --wait "
 [diff]
