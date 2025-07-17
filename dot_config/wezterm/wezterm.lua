@@ -4,20 +4,7 @@ local wezterm = require("wezterm")
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 
-config.wsl_domains = {
-	{
-		name = "WSL:Ubuntu",
-		distribution = "Ubuntu",
-	},
-}
 config.default_domain = "WSL:Ubuntu"
-
-config.launch_menu = {
-	{
-		label = "Ubuntu",
-		args = { "wsl", "-d", "Ubuntu" },
-	},
-}
 
 -- For example, changing the initial geometry for new windows:
 config.initial_cols = 120
