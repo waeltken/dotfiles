@@ -20,7 +20,7 @@ config.color_scheme = "Catppuccin Mocha"
 
 -- apprearance
 
-config.window_decorations = "RESIZE"
+-- config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
 
 -- Finally, return the configuration to wezterm:
