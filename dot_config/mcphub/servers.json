@@ -1,0 +1,8 @@
+{
+  "nativeMCPServers": [],
+  "mcpServers": {
+    "git": {
+      "disabled": false
+    }
+  }
+}
