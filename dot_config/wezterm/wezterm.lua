@@ -4,7 +4,11 @@ local wezterm = require("wezterm")
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 
-config.default_domain = "WSL:Ubuntu"
+if wezterm.target_triple == "x86_64-pc-windows-msvc" then
+	config.default_domain = "WSL:Ubuntu"
+else
+	config.default_domain = "local"
+end
 
 -- For example, changing the initial geometry for new windows:
 config.initial_cols = 120
