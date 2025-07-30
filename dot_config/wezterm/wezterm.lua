@@ -19,7 +19,7 @@ config.scrollback_lines = 15000
 
 -- or, changing the font size and color scheme.
 config.font_size = 13
-config.font = wezterm.font("CaskaydiaCove NFM")
+config.font = wezterm.font("CaskaydiaCove NF")
 config.color_scheme = "Catppuccin Mocha"
 
 -- apprearance
