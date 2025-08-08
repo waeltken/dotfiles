@@ -59,3 +59,5 @@ set -gx AZURE_DEV_COLLECT_TELEMETRY no
 set -gx PNPM_HOME "{{ .chezmoi.homeDir }}/.local/share/pnpm"
 fish_add_path $PNPM_HOME
 # pnpm end
+
+zoxide init fish | source
