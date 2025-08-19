@@ -1,3 +1,8 @@
 README.md
 LICENSE
 Brewfile
+{{ if ne .chezmoi.os "windows" -}}
+komorebi.bar.json
+komorebi.json
+{{ end -}}
+
