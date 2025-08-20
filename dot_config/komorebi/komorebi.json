@@ -11,14 +11,12 @@
     "enabled": false
   },
   "theme": {
-    "palette": "Base16",
-    "name": "Ashes",
-    "unfocused_border": "Base03",
-    "bar_accent": "Base0D"
+    "name": "Macchiato",
+    "palette": "Catppuccin"
   },
   "display_index_preferences": {
-    "0": "MSI3FA8-5&8253a5c&0&UID41219",
-    "1": "CHY0000-1&28a6823a&3&UID257"
+    "0": "0",
+    "1": "1"
   },
   "monitors": [
     {
