@@ -19,13 +19,13 @@ end
 
 -- For example, changing the initial geometry for new windows:
 config.initial_cols = 120
-config.initial_rows = 28
+config.initial_rows = 34
 
 config.enable_scroll_bar = true
 config.scrollback_lines = 15000
 
 -- or, changing the font size and color scheme.
-config.font_size = 13
+config.font_size = 15
 config.font = wezterm.font("CaskaydiaCove NF")
 config.color_scheme = "Catppuccin Mocha"
 
