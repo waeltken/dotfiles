@@ -8,13 +8,13 @@ config.launch_menu = {}
 local launch_menu = config.launch_menu
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
-	config.default_domain = "WSL:Ubuntu"
-	table.insert(launch_menu, {
-		label = "PowerShell",
-		args = { "pwsh.exe", "-NoLogo" },
-	})
+  config.default_domain = "WSL:Ubuntu"
+  table.insert(launch_menu, {
+    label = "PowerShell",
+    args = { "pwsh.exe", "-NoLogo" },
+  })
 else
-	config.default_domain = "local"
+  config.default_domain = "local"
 end
 
 -- For example, changing the initial geometry for new windows:
