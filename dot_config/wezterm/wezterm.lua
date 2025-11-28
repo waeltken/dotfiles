@@ -11,7 +11,7 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
   config.default_domain = "WSL:Ubuntu"
   table.insert(launch_menu, {
     label = "PowerShell",
-    args = { "pwsh.exe", "-NoLogo" },
+    args = { "pwsh.exe" },
   })
 else
   config.default_domain = "local"
