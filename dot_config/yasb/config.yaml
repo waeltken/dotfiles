@@ -50,6 +50,7 @@ bars:
         [
           "media",
           "weather",
+          "language",
           "microphone",
           "volume",
           "notifications",
@@ -208,9 +209,9 @@ widgets:
   language:
     type: "yasb.language.LanguageWidget"
     options:
-      label: "{lang[language_code]}-{lang[country_code]}"
+      label: "{lang[language_code]}"
       label_alt: "{lang[full_name]}"
-      update_interval: 5
+      update_interval: 1
       callbacks:
         on_left: "toggle_menu"
         on_middle: "do_nothing"
