@@ -1,4 +1,4 @@
-# This is default and very simple configuration file for Yasb. 
+# This is default and very simple configuration file for Yasb.
 # For more information about configuration options, please visit the Wiki https://github.com/amnweb/yasb/wiki
 watch_stylesheet: true
 watch_config: true
@@ -38,23 +38,22 @@ bars:
       bottom: 0
       right: 6
     widgets:
-      left: [
-        "home",
-        "komorebi_workspaces",
-        "komorebi_active_layout",
-        "active_window",
-      ]
-      center: [
-        "clock",
-        "apps"
-      ]
-      right: [
-        "media",
-        "weather",
-        "microphone",
-        "volume",
-        "notifications",
-        "power_menu"
+      left:
+        [
+          "home",
+          "komorebi_workspaces",
+          "komorebi_active_layout",
+          "active_window",
+        ]
+      center: ["clock", "apps"]
+      right:
+        [
+          "media",
+          "weather",
+          "microphone",
+          "volume",
+          "notifications",
+          "power_menu",
         ]
 widgets:
   home:
@@ -62,10 +61,10 @@ widgets:
     options:
       label: "<span>\udb81\udf17</span>"
       menu_list:
-      - { title: "User Home", path: "~" }
-      - { title: "Download", path: "~\\Downloads" }
-      - { title: "Documents", path: "~\\Documents" }
-      - { title: "Pictures", path: "~\\Pictures" }
+        - { title: "User Home", path: "~" }
+        - { title: "Download", path: "~\\Downloads" }
+        - { title: "Documents", path: "~\\Documents" }
+        - { title: "Pictures", path: "~\\Pictures" }
       system_menu: true
       power_menu: true
       blur: false
@@ -206,6 +205,32 @@ widgets:
       callbacks:
         on_left: "toggle_mute"
         on_right: "exec cmd.exe /c start ms-settings:sound"
+  language:
+    type: "yasb.language.LanguageWidget"
+    options:
+      label: "{lang[language_code]}-{lang[country_code]}"
+      label_alt: "{lang[full_name]}"
+      update_interval: 5
+      callbacks:
+        on_left: "toggle_menu"
+        on_middle: "do_nothing"
+        on_right: "toggle_label"
+      language_menu:
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "system"
+        alignment: "right"
+        direction: "down"
+        offset_top: 6
+        offset_left: 0
+        show_layout_icon: true
+        layout_icon: "\uf11c"
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [1, 1]
   microphone:
     type: "yasb.microphone.MicrophoneWidget"
     options:
@@ -246,7 +271,10 @@ widgets:
       app_list:
         - { icon: "\uf422", launch: "search" }
         - { icon: "\ueb03", launch: "cmd /c Taskmgr" }
-        - { icon: "\udb80\ude39",launch: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" }
+        - {
+            icon: "\udb80\ude39",
+            launch: "C:\\Program Files\\Mozilla Firefox\\firefox.exe",
+          }
   notifications:
     type: "yasb.notifications.NotificationsWidget"
     options:
