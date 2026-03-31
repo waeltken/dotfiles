@@ -2,4 +2,7 @@ README.md
 LICENSE
 Brewfile
 disable_lock.reg
+{{ if ne .chezmoi.os "windows" }}
+AppData/
+{{ end }}
 
