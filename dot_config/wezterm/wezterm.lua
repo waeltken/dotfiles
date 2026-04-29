@@ -3,12 +3,14 @@ local wezterm = require("wezterm")
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
+config.enable_kitty_keyboard = true
 
 config.launch_menu = {}
 local launch_menu = config.launch_menu
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
   config.default_domain = "WSL:Ubuntu"
+  config.default_prog = { "fish", "-l" }
   table.insert(launch_menu, {
     label = "PowerShell",
     args = { "pwsh.exe" },
