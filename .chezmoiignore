@@ -2,6 +2,8 @@ README.md
 LICENSE
 Brewfile
 disable_lock.reg
+.pi/agent/auth.json
+.pi/agent/sessions/
 {{ if ne .chezmoi.os "windows" }}
 AppData/
 {{ end }}
