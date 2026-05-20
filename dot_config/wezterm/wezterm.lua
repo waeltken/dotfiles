@@ -13,8 +13,15 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	config.default_domain = "WSL:Ubuntu"
 	-- config.default_prog = { "fish", "-l" }
 	table.insert(launch_menu, {
-		label = "PowerShell",
-		args = { "pwsh.exe" },
+		label = "PowerShell (oh-my-posh)",
+		args = {
+			"pwsh.exe",
+			"-NoLogo",
+			"-NoExit",
+			"-Command",
+			"oh-my-posh init pwsh | Invoke-Expression",
+		},
+		domain = { DomainName = "local" },
 	})
 	config.keys = {
 		{ key = "Enter", mods = "SHIFT", action = act.SendString("\x1b[13;2u") },
