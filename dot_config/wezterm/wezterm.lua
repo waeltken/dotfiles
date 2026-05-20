@@ -1,9 +1,10 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
+local act = wezterm.action
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
-config.enable_kitty_keyboard = true
+config.enable_kitty_keyboard = wezterm.target_triple ~= "x86_64-pc-windows-msvc"
 
 config.launch_menu = {}
 local launch_menu = config.launch_menu
@@ -15,6 +16,15 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 		label = "PowerShell",
 		args = { "pwsh.exe" },
 	})
+	config.keys = {
+		{ key = "Enter", mods = "SHIFT", action = act.SendString("\x1b[13;2u") },
+		{ key = "Enter", mods = "ALT", action = act.SendString("\x1b[13;3u") },
+	}
+
+	-- Work around broken shifted printable input on Windows when kitty keyboard
+	-- protocol is enabled in WezTerm. Pi/OMP only need the modified Enter
+	-- sequences, so forward those explicitly while leaving normal text input in
+	-- the legacy path.
 else
 	config.default_domain = "local"
 end
