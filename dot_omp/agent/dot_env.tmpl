@@ -1,5 +1,7 @@
 {{- if eq .chezmoi.os "windows" -}}
 PUPPETEER_EXECUTABLE_PATH=C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe
-{{ else if eq .chezmoi.os "darwin" -}}
+{{- else if eq .chezmoi.os "darwin" -}}
 PUPPETEER_EXECUTABLE_PATH=/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge
-{{ end -}}
+{{- else if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+PUPPETEER_EXECUTABLE_PATH=/mnt/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe
+{{- end -}}
