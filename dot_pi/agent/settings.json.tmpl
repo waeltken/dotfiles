@@ -1,0 +1,11 @@
+{{- $path := joinPath .chezmoi.homeDir ".pi/agent/settings.json" -}}
+{{- $current := dict -}}
+{{- if stat $path -}}
+{{- $current = (include $path | fromJson) -}}
+{{- end -}}
+{
+  "lastChangelogVersion": {{ index $current "lastChangelogVersion" | default "0.70.6" | quote }},
+  "defaultProvider": "github-copilot",
+  "defaultModel": "gpt-5.4",
+  "defaultThinkingLevel": "medium"
+}
