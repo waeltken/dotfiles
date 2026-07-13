@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Printable shortcut reference for Windows, WezTerm, and tmux.">
+  <title>Terminal Control Reference</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --base: #1e1e2e;
+      --mantle: #181825;
+      --surface: #313244;
+      --surface-2: #45475a;
+      --text: #cdd6f4;
+      --muted: #a6adc8;
+      --blue: #89b4fa;
+      --green: #a6e3a1;
+      --peach: #fab387;
+      --pink: #f5c2e7;
+      --yellow: #f9e2af;
+      --border: rgba(205, 214, 244, .18);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--base); }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--text);
+      background: var(--base);
+      line-height: 1.45;
+    }
+    a { color: var(--blue); }
+    .page {
+      width: min(1440px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2rem 0 3rem;
+    }
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      background: var(--mantle);
+    }
+    h1, h2, h3 { line-height: 1.15; }
+    h1 { margin: 0 0 .5rem; font-size: clamp(1.8rem, 4vw, 3rem); }
+    h2 { margin: 0; font-size: 1.45rem; }
+    h3 { margin: 0; font-size: 1rem; color: var(--text); }
+    .architecture { margin: 0; color: var(--muted); font-size: 1.05rem; }
+    .revision { margin: .85rem 0 0; color: var(--muted); font-size: .8rem; }
+    button {
+      border: 1px solid var(--blue);
+      border-radius: .5rem;
+      padding: .65rem .9rem;
+      color: var(--base);
+      background: var(--blue);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    button:hover, button:focus-visible { background: var(--green); }
+    button:focus-visible, a:focus-visible, .card:focus-within {
+      outline: 3px solid var(--yellow);
+      outline-offset: 3px;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem;
+      margin: 0 0 1.5rem;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .35rem .6rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+    }
+    .dot { width: .65rem; height: .65rem; border-radius: 50%; }
+    .dot.windows { background: var(--peach); }
+    .dot.wezterm { background: var(--green); }
+    .dot.tmux { background: var(--blue); }
+    main { display: grid; gap: 1.5rem; }
+    .domain {
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--accent);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      background: var(--mantle);
+    }
+    .domain.windows { --accent: var(--peach); }
+    .domain.wezterm { --accent: var(--green); }
+    .domain.tmux { --accent: var(--blue); }
+    .domain-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .domain-header p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+      gap: .75rem;
+    }
+    .card {
+      min-height: 7rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: .7rem;
+      padding: .85rem;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: .65rem;
+      background: var(--surface);
+    }
+    .card p { margin: 0; color: var(--muted); font-size: .88rem; }
+    .keys { display: flex; flex-wrap: wrap; gap: .3rem; align-items: center; }
+    kbd {
+      display: inline-block;
+      min-width: 1.65rem;
+      padding: .18rem .42rem;
+      border: 1px solid var(--surface-2);
+      border-bottom-width: 2px;
+      border-radius: .35rem;
+      color: var(--text);
+      background: var(--mantle);
+      font: 700 .78rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .plus { color: var(--muted); font-weight: 700; }
+    .note {
+      margin: 0 0 1rem;
+      padding: .8rem 1rem;
+      border: 1px solid color-mix(in srgb, var(--accent), transparent 45%);
+      border-radius: .6rem;
+      color: var(--text);
+      background: color-mix(in srgb, var(--accent), transparent 88%);
+    }
+    .workflow {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: .65rem;
+      background: var(--surface);
+    }
+    .workflow p { margin: .35rem 0 0; color: var(--muted); }
+    pre {
+      margin: .75rem 0 0;
+      padding: .8rem;
+      overflow-x: auto;
+      border-radius: .45rem;
+      color: var(--green);
+      background: var(--mantle);
+      font: .9rem/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    footer { margin-top: 1.5rem; color: var(--muted); font-size: .8rem; }
+
+    @media (min-width: 900px) {
+      main { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+      .domain.windows { grid-column: 1 / -1; }
+    }
+    @media (min-width: 1280px) {
+      main { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .domain.windows { grid-column: auto; }
+    }
+    @media (max-width: 600px) {
+      .page { width: min(100% - 1rem, 1440px); padding-top: .5rem; }
+      header { flex-direction: column; padding: 1rem; }
+      button { width: 100%; }
+      .domain { padding: .9rem; }
+    }
+
+    @media print {
+      @page { size: auto; margin: 14mm; }
+      :root { color-scheme: light; }
+      html, body { background: #fff !important; color: #000 !important; }
+      body { font-size: 10pt; }
+      .page { width: 100%; padding: 0; }
+      header, .domain, .card, .workflow, .legend, .note {
+        background: #fff !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+      }
+      header { border-color: #999; margin-bottom: 1rem; padding: .8rem; }
+      h1, h2, h3, .architecture, .revision, .card p, .domain-header p, .workflow p, footer { color: #000 !important; }
+      .legend, button { display: none !important; }
+      main { display: block; }
+      .domain { margin-bottom: 1rem; padding: .8rem; border-color: #777; border-top-color: var(--accent); break-inside: avoid; }
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+      .card { min-height: 0; padding: .55rem; border-color: #999; border-left-color: var(--accent); break-inside: avoid; }
+      kbd { color: #000; background: #fff; border-color: #555; }
+      pre { color: #000; background: #fff; border: 1px solid #999; white-space: pre-wrap; }
+      .domain.windows { --accent: #a44b00; }
+      .domain.wezterm { --accent: #176b35; }
+      .domain.tmux { --accent: #15549a; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+    @media print and (max-width: 700px) {
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <h1>Terminal Control Reference</h1>
+        <p class="architecture">Windows desktop → WezTerm context → tmux session</p>
+        <p class="revision">Reference revision: 2026-07-13 · manually maintained; not automatically synchronized.</p>
+      </div>
+      <button type="button" onclick="window.print()">Print reference</button>
+    </header>
+
+    <nav class="legend" aria-label="Control domain legend">
+      <span><i class="dot windows" aria-hidden="true"></i>Windows / Komorebi</span>
+      <span><i class="dot wezterm" aria-hidden="true"></i>WezTerm</span>
+      <span><i class="dot tmux" aria-hidden="true"></i>tmux / remote</span>
+    </nav>
+
+    <main>
+      <section class="domain windows" aria-labelledby="windows-title">
+        <div class="domain-header">
+          <h2 id="windows-title">Komorebi / Windows</h2>
+          <p>Desktop windows, layouts, and monitor workspaces</p>
+        </div>
+        <p class="note"><strong>Taskbar passthrough:</strong> <kbd>Win</kbd><span class="plus">+</span><kbd>1..5</kbd> and <kbd>Win</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>1..5</kbd> remain Windows pinned-app launch and new-instance shortcuts. <kbd>Win</kbd><span class="plus">+</span><kbd>L</kbd> remains Windows lock.</p>
+        <div class="cards">
+          <article class="card"><h3>Main workspaces</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>1..6</kbd></div><p>Focus main-monitor workspace 1 through 6.</p></article>
+          <article class="card"><h3>Move to main workspace</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>1..6</kbd></div><p>Move the current window to a main-monitor workspace.</p></article>
+          <article class="card"><h3>Presentation workspaces</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>Ctrl</kbd><span class="plus">+</span><kbd>1..3</kbd></div><p>Focus only presentation-monitor workspace 1 through 3.</p></article>
+          <article class="card"><h3>Move to presentation workspace</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>Ctrl</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>1..3</kbd></div><p>Move a window to a presentation-monitor workspace.</p></article>
+          <article class="card"><h3>Focus direction</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>H</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></div><p>Focus left, down, up, or right.</p></article>
+          <article class="card"><h3>Move direction</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>H</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></div><p>Move left, down, up, or right.</p></article>
+          <article class="card"><h3>Cycle focus</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>[</kbd><kbd>]</kbd></div><p>Cycle focus to the previous or next window.</p></article>
+          <article class="card"><h3>Promote</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>Enter</kbd></div><p>Promote the focused window.</p></article>
+          <article class="card"><h3>Stack</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>←</kbd><kbd>↓</kbd><kbd>↑</kbd><kbd>→</kbd></div><p>Stack left, down, up, or right.</p></article>
+          <article class="card"><h3>Unstack / cycle stack</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>;</kbd> <span class="plus">or</span> <kbd>Shift</kbd><span class="plus">+</span><kbd>[</kbd><kbd>]</kbd></div><p>Unstack, or cycle the stack backward/forward.</p></article>
+          <article class="card"><h3>Horizontal resize</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>+</kbd><kbd>−</kbd></div><p>Increase or decrease horizontal size.</p></article>
+          <article class="card"><h3>Vertical resize</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>+</kbd><kbd>−</kbd></div><p>Increase or decrease vertical size.</p></article>
+          <article class="card"><h3>Float / monocle</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>T</kbd> <span class="plus">or</span> <kbd>F</kbd></div><p>Toggle floating or monocle mode.</p></article>
+          <article class="card"><h3>Retile / pause</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>R</kbd> <span class="plus">or</span> <kbd>P</kbd></div><p>Retile windows or toggle Komorebi pause.</p></article>
+          <article class="card"><h3>Flip layout</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>X</kbd><kbd>Y</kbd></div><p>Flip layout horizontally or vertically.</p></article>
+          <article class="card"><h3>Window utilities</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>Q</kbd><kbd>M</kbd><kbd>S</kbd></div><p>Close, minimize, or toggle Komorebi lock.</p></article>
+          <article class="card"><h3>Reload and control</h3><div class="keys"><kbd>Win</kbd><span class="plus">+</span><kbd>Alt</kbd><span class="plus">+</span><kbd>O</kbd> <span class="plus">or</span> <kbd>Shift</kbd><span class="plus">+</span><kbd>O</kbd><kbd>I</kbd></div><p>Restart whkd, reload Komorebi, or toggle shortcuts.</p></article>
+        </div>
+      </section>
+
+      <section class="domain wezterm" aria-labelledby="wezterm-title">
+        <div class="domain-header">
+          <h2 id="wezterm-title">WezTerm</h2>
+          <p>Independent terminal contexts</p>
+        </div>
+        <div class="cards">
+          <article class="card"><h3>Select tab 1–9</h3><div class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>1..9</kbd></div><p>Select a WezTerm tab directly.</p></article>
+          <article class="card"><h3>Previous tab</h3><div class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>H</kbd></div><p>Select the previous WezTerm tab.</p></article>
+          <article class="card"><h3>Next tab</h3><div class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>L</kbd></div><p>Select the next WezTerm tab.</p></article>
+        </div>
+      </section>
+
+      <section class="domain tmux" aria-labelledby="tmux-title">
+        <div class="domain-header">
+          <h2 id="tmux-title">tmux / remote</h2>
+          <p>Persistent sessions, windows, and panes</p>
+        </div>
+        <p class="note"><strong>Prefix:</strong> <kbd>Ctrl</kbd><span class="plus">+</span><kbd>Space</kbd>. WezTerm tabs are outer contexts; tmux windows and panes are durable work inside them.</p>
+        <div class="cards">
+          <article class="card"><h3>Select window 1–9</h3><div class="keys"><kbd>Prefix</kbd><span class="plus">+</span><kbd>1..9</kbd></div><p>Select a tmux window directly.</p></article>
+          <article class="card"><h3>Previous / next window</h3><div class="keys"><kbd>Prefix</kbd><span class="plus">+</span><kbd>H</kbd><kbd>L</kbd></div><p>Move between tmux windows.</p></article>
+          <article class="card"><h3>Navigate panes</h3><div class="keys"><kbd>Prefix</kbd><span class="plus">+</span><kbd>H</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></div><p>Select the pane left, down, up, or right.</p></article>
+          <article class="card"><h3>Detach</h3><div class="keys"><kbd>Prefix</kbd><span class="plus">+</span><kbd>Ctrl</kbd><span class="plus">+</span><kbd>D</kbd></div><p>Detach while leaving the session running.</p></article>
+          <article class="card"><h3>Choose session</h3><div class="keys"><kbd>Prefix</kbd><span class="plus">+</span><kbd>S</kbd></div><p>Open the session chooser.</p></article>
+          <article class="card"><h3>Reload config</h3><div class="keys"><kbd>Prefix</kbd><span class="plus">+</span><kbd>R</kbd></div><p>Reload configuration and display confirmation.</p></article>
+          <article class="card"><h3>Zoom pane</h3><div class="keys"><kbd>Prefix</kbd><span class="plus">+</span><kbd>Z</kbd></div><p>Toggle pane zoom.</p></article>
+          <article class="card"><h3>Kill pane / new window</h3><div class="keys"><kbd>Prefix</kbd><span class="plus">+</span><kbd>C</kbd> <span class="plus">or</span> <kbd>Ctrl</kbd><span class="plus">+</span><kbd>C</kbd></div><p>Lowercase c kills a pane; Ctrl+C creates a window.</p></article>
+          <article class="card"><h3>Right pane / sync</h3><div class="keys"><kbd>Prefix</kbd><span class="plus">+</span><kbd>L</kbd> <span class="plus">or</span> <kbd>*</kbd></div><p>Lowercase l selects the right pane; * toggles synchronization.</p></article>
+        </div>
+        <div class="workflow">
+          <h3>Local and remote workflow</h3>
+          <pre><code>tmux new-session -A -s main</code></pre>
+          <p>Run after entering WSL or a remote host. Detach with <kbd>Ctrl</kbd><span class="plus">+</span><kbd>Space</kbd>, then <kbd>Ctrl</kbd><span class="plus">+</span><kbd>D</kbd>; rerun the command to reattach. Persistence and Continuum restoration apply on the host running tmux. No SSH ControlMaster or automatic remote wrapping is configured.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>Shortcut strings mirror the maintained whkdrc, WezTerm, and tmux configuration.</footer>
+  </div>
+</body>
+</html>

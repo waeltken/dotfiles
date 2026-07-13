@@ -23,10 +23,9 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 		},
 		domain = { DomainName = "local" },
 	})
-	config.keys = {
-		{ key = "Enter", mods = "SHIFT", action = act.SendString("\x1b[13;2u") },
-		{ key = "Enter", mods = "ALT", action = act.SendString("\x1b[13;3u") },
-	}
+	config.keys = config.keys or {}
+	table.insert(config.keys, { key = "Enter", mods = "SHIFT", action = act.SendString("\x1b[13;2u") })
+	table.insert(config.keys, { key = "Enter", mods = "ALT", action = act.SendString("\x1b[13;3u") })
 
 	-- Work around broken shifted printable input on Windows when kitty keyboard
 	-- protocol is enabled in WezTerm. Pi/OMP only need the modified Enter
@@ -36,6 +35,23 @@ else
 	config.default_domain = "local"
 end
 
+for tab = 1, 9 do
+	table.insert(config.keys, {
+		key = tostring(tab),
+		mods = "CTRL|SHIFT",
+		action = act.ActivateTab(tab - 1),
+	})
+end
+table.insert(config.keys, {
+	key = "H",
+	mods = "CTRL|SHIFT",
+	action = act.ActivateTabRelative(-1),
+})
+table.insert(config.keys, {
+	key = "L",
+	mods = "CTRL|SHIFT",
+	action = act.ActivateTabRelative(1),
+})
 -- For example, changing the initial geometry for new windows:
 config.initial_cols = 120
 config.initial_rows = 34

@@ -33,6 +33,18 @@
         {
           "name": "III",
           "layout": "UltrawideVerticalStack"
+        },
+        {
+          "name": "IV",
+          "layout": "UltrawideVerticalStack"
+        },
+        {
+          "name": "V",
+          "layout": "UltrawideVerticalStack"
+        },
+        {
+          "name": "VI",
+          "layout": "UltrawideVerticalStack"
         }
       ]
     },

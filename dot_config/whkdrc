@@ -1,79 +1,81 @@
 .shell powershell
 
 # Reload whkd configuration
-# win + o                 : taskkill /f /im whkd.exe && start /b whkd # if shell is cmd
-win + o                 : taskkill /f /im whkd.exe; Start-Process whkd -WindowStyle hidden # if shell is pwsh / powershell
-win + shift + o         : komorebic reload-configuration
+# win + alt + o                 : taskkill /f /im whkd.exe && start /b whkd # if shell is cmd
+win + alt + o                 : taskkill /f /im whkd.exe; Start-Process whkd -WindowStyle hidden # if shell is pwsh / powershell
+win + alt + shift + o         : komorebic reload-configuration
 
-win + i                 : komorebic toggle-shortcuts
+win + alt + i                 : komorebic toggle-shortcuts
 
 # App shortcuts - these require shell to be pwsh / powershell
 # The apps will be focused if open, or launched if not open
-# win + f                 : if ($wshell.AppActivate('Firefox') -eq $False) { start firefox }
-# win + b                 : if ($wshell.AppActivate('Chrome') -eq $False) { start chrome }
+# win + alt + f                 : if ($wshell.AppActivate('Firefox') -eq $False) { start firefox }
+# win + alt + b                 : if ($wshell.AppActivate('Chrome') -eq $False) { start chrome }
 
-win + q                 : komorebic close
-win + m                 : komorebic minimize
-win + s                 : komorebic toggle-lock
+win + alt + q                 : komorebic close
+win + alt + m                 : komorebic minimize
+win + alt + s                 : komorebic toggle-lock
 
 # Focus windows
-win + h                 : komorebic focus left
-win + j                 : komorebic focus down
-win + k                 : komorebic focus up
-win + l                 : komorebic focus right
-win + shift + oem_4     : komorebic cycle-focus previous # oem_4 is [
-win + shift + oem_6     : komorebic cycle-focus next # oem_6 is ]
+win + alt + h                 : komorebic focus left
+win + alt + j                 : komorebic focus down
+win + alt + k                 : komorebic focus up
+win + alt + l                 : komorebic focus right
+win + alt + oem_4             : komorebic cycle-focus previous # oem_4 is [
+win + alt + oem_6             : komorebic cycle-focus next # oem_6 is ]
 
 # Move windows
-win + shift + h         : komorebic move left
-win + shift + j         : komorebic move down
-win + shift + k         : komorebic move up
-win + shift + l         : komorebic move right
-win + shift + return    : komorebic promote
+win + alt + shift + h         : komorebic move left
+win + alt + shift + j         : komorebic move down
+win + alt + shift + k         : komorebic move up
+win + alt + shift + l         : komorebic move right
+win + alt + shift + return    : komorebic promote
 
 # Stack windows
-win + left              : komorebic stack left
-win + down              : komorebic stack down
-win + up                : komorebic stack up
-win + right             : komorebic stack right
-win + oem_1             : komorebic unstack # oem_1 is ;
-win + oem_4             : komorebic cycle-stack previous # oem_4 is [
-win + oem_6             : komorebic cycle-stack next # oem_6 is ]
+win + alt + left              : komorebic stack left
+win + alt + down              : komorebic stack down
+win + alt + up                : komorebic stack up
+win + alt + right             : komorebic stack right
+win + alt + oem_1             : komorebic unstack # oem_1 is ;
+win + alt + shift + oem_4     : komorebic cycle-stack previous # oem_4 is [
+win + alt + shift + oem_6     : komorebic cycle-stack next # oem_6 is ]
 
 # Resize
-win + oem_plus          : komorebic resize-axis horizontal increase
-win + oem_minus         : komorebic resize-axis horizontal decrease
-win + shift + oem_plus  : komorebic resize-axis vertical increase
-win + shift + oem_minus : komorebic resize-axis vertical decrease
+win + alt + oem_plus          : komorebic resize-axis horizontal increase
+win + alt + oem_minus         : komorebic resize-axis horizontal decrease
+win + alt + shift + oem_plus  : komorebic resize-axis vertical increase
+win + alt + shift + oem_minus : komorebic resize-axis vertical decrease
 
 # Manipulate windows
-win + t                 : komorebic toggle-float
-win + f                 : komorebic toggle-monocle
+win + alt + t                 : komorebic toggle-float
+win + alt + f                 : komorebic toggle-monocle
 
 # Window manager options
-win + shift + r         : komorebic retile
-win + p                 : komorebic toggle-pause
+win + alt + shift + r         : komorebic retile
+win + alt + p                 : komorebic toggle-pause
 
 # Layouts
-win + x                 : komorebic flip-layout horizontal
-win + y                 : komorebic flip-layout vertical
+win + alt + x                 : komorebic flip-layout horizontal
+win + alt + y                 : komorebic flip-layout vertical
 
 # Workspaces
-win + 1                 : komorebic focus-workspace 0
-win + 2                 : komorebic focus-workspace 1
-win + 3                 : komorebic focus-workspace 2
-win + 4                 : komorebic focus-workspace 3
-win + 5                 : komorebic focus-workspace 4
-win + 6                 : komorebic focus-workspace 5
-win + 7                 : komorebic focus-workspace 6
-win + 8                 : komorebic focus-workspace 7
+win + alt + 1                 : komorebic focus-monitor-workspace 0 0
+win + alt + 2                 : komorebic focus-monitor-workspace 0 1
+win + alt + 3                 : komorebic focus-monitor-workspace 0 2
+win + alt + 4                 : komorebic focus-monitor-workspace 0 3
+win + alt + 5                 : komorebic focus-monitor-workspace 0 4
+win + alt + 6                 : komorebic focus-monitor-workspace 0 5
+win + alt + shift + 1         : komorebic move-to-monitor-workspace 0 0
+win + alt + shift + 2         : komorebic move-to-monitor-workspace 0 1
+win + alt + shift + 3         : komorebic move-to-monitor-workspace 0 2
+win + alt + shift + 4         : komorebic move-to-monitor-workspace 0 3
+win + alt + shift + 5         : komorebic move-to-monitor-workspace 0 4
+win + alt + shift + 6         : komorebic move-to-monitor-workspace 0 5
 
-# Move windows across workspaces
-win + shift + 1         : komorebic move-to-workspace 0
-win + shift + 2         : komorebic move-to-workspace 1
-win + shift + 3         : komorebic move-to-workspace 2
-win + shift + 4         : komorebic move-to-workspace 3
-win + shift + 5         : komorebic move-to-workspace 4
-win + shift + 6         : komorebic move-to-workspace 5
-win + shift + 7         : komorebic move-to-workspace 6
-win + shift + 8         : komorebic move-to-workspace 7
+# Presentation monitor workspaces
+win + alt + ctrl + 1          : komorebic focus-monitor-workspace 1 0
+win + alt + ctrl + 2          : komorebic focus-monitor-workspace 1 1
+win + alt + ctrl + 3          : komorebic focus-monitor-workspace 1 2
+win + alt + ctrl + shift + 1  : komorebic move-to-monitor-workspace 1 0
+win + alt + ctrl + shift + 2  : komorebic move-to-monitor-workspace 1 1
+win + alt + ctrl + shift + 3  : komorebic move-to-monitor-workspace 1 2
