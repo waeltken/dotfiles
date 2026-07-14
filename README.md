@@ -2,7 +2,7 @@
 
 > A reproducible, keyboard-first development environment for macOS, Linux, Windows, and Windows + WSL—managed with [chezmoi](https://www.chezmoi.io/).
 
-This repository turns a fresh machine into the environment I use every day: a capable shell, a durable terminal workflow, Neovim, and—on Windows—a tiling desktop built around Komorebi.
+This repository turns a fresh machine into the environment I use every day: a capable shell, a durable terminal workflow, Neovim, and (even on Windows) a tiling desktop built around Komorebi.
 
 It is intentionally opinionated. Chezmoi owns configuration, Homebrew owns macOS/Linux packages, Scoop owns Windows applications, WezTerm owns terminal tabs, tmux owns persistent sessions, and Komorebi owns desktop windows. Keeping those responsibilities separate makes the setup predictable and recoverable.
 
