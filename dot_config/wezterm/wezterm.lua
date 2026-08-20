@@ -61,7 +61,10 @@ config.scrollback_lines = 15000
 
 -- or, changing the font size and color scheme.
 config.font_size = 15
-config.font = wezterm.font("CaskaydiaCove NF")
+config.font = wezterm.font_with_fallback({
+	{ family = "CaskaydiaMono Nerd Font Mono" },
+	"Symbols Nerd Font Mono",
+})
 config.color_scheme = "Catppuccin Mocha"
 
 -- apprearance
