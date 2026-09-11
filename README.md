@@ -275,6 +275,38 @@ The declared plugin set lives in `dot_config/fish/fish_plugins`.
 - YASB's weather widget reads its API key and location from the environment. Use the variable names documented by the installed YASB version; do not store secrets in `config.yaml`.
 - The templated Puppeteer path expects Microsoft Edge on Windows, macOS, and WSL. Native Linux intentionally has no configured Edge path.
 
+### Mail archive
+
+On Linux, `mail-archive` creates a one-way local backup of the configured IMAP
+account before marking mail older than 365 days for deletion. Chezmoi asks for
+the IMAP hostname, TLS port, username, and local archive directory during
+initialization; these values remain in local chezmoi data and are rendered into
+a private configuration file and script.
+The password is not saved and is prompted for by `mbsync` at runtime.
+It requires Bash 4+, GNU `find`, GNU `stat`, and `mbsync` from `isync`.
+The repository `Brewfile` installs `isync`; install it separately when not using
+`brew bundle`:
+
+```sh
+brew install isync
+```
+
+Run the workflow in order:
+
+```sh
+mail-archive backup
+mail-archive status
+mail-archive preview
+mail-archive mark
+mail-archive expunge
+```
+
+Inspect the configured archive's `eml/` directory before marking anything. `mark`
+requires a successful backup from the last 24 hours and only sets IMAP's
+`\\Deleted` flag. `expunge` is a separate, explicitly confirmed operation that
+permanently removes every message already marked `\\Deleted`, including marks
+created by other mail clients. The offline archive remains intact.
+
 ## Day-to-day use
 
 Preview before applying:

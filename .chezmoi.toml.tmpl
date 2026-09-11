@@ -2,9 +2,17 @@
 {{- $email := promptStringOnce . "email" "Email Address e.g. for git commits" -}}
 {{- $signing_key := promptStringOnce . "signing_key" "GPG Signing Key (leave blank to disable commit signing)" -}}
 {{- $github_username := promptStringOnce . "github_username" "GitHub Username" -}}
+{{- $mail_archive_imap_host := promptStringOnce . "mail_archive_imap_host" "Mail archive IMAP hostname" -}}
+{{- $mail_archive_imap_port := promptStringOnce . "mail_archive_imap_port" "Mail archive IMAP TLS port (usually 993)" -}}
+{{- $mail_archive_imap_user := promptStringOnce . "mail_archive_imap_user" "Mail archive IMAP username" -}}
+{{- $mail_archive_directory := promptStringOnce . "mail_archive_directory" "Mail archive directory (for example, ~/MailArchive/account)" -}}
 
 [data]
     name = {{ $name | quote }}
     email = {{ $email | quote }}
     github_username = {{ $github_username | quote }}
-		signing_key = {{ $signing_key | quote }}
+    signing_key = {{ $signing_key | quote }}
+    mail_archive_imap_host = {{ $mail_archive_imap_host | quote }}
+    mail_archive_imap_port = {{ $mail_archive_imap_port | quote }}
+    mail_archive_imap_user = {{ $mail_archive_imap_user | quote }}
+    mail_archive_directory = {{ $mail_archive_directory | quote }}

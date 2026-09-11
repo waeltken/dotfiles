@@ -1,0 +1,25 @@
+IMAPAccount mail-archive
+Host {{ .mail_archive_imap_host | quote }}
+Port {{ .mail_archive_imap_port }}
+User {{ .mail_archive_imap_user | quote }}
+TLSType IMAPS
+AuthMechs PLAIN
+
+IMAPStore mail-archive-remote
+Account mail-archive
+
+MaildirStore mail-archive-local
+Path {{ printf "%s/maildir/" .mail_archive_directory | quote }}
+Inbox {{ printf "%s/maildir/INBOX/" .mail_archive_directory | quote }}
+SubFolders Verbatim
+
+Channel mail-archive
+Far :mail-archive-remote:
+Near :mail-archive-local:
+Patterns INBOX *
+Sync PullNew PullOld
+Create Near
+Remove None
+Expunge None
+CopyArrivalDate yes
+SyncState *

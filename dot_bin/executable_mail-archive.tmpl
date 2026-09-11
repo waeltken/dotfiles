@@ -1,0 +1,149 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly CONFIG_DIR="$HOME/.config/mail-archive"
+readonly ARCHIVE_DIR={{ .mail_archive_directory | quote }}
+readonly MAILDIR="$ARCHIVE_DIR/maildir"
+readonly EML_DIR="$ARCHIVE_DIR/eml"
+readonly RECEIPT="$ARCHIVE_DIR/.last-successful-backup"
+
+if ! MBSYNC="$(command -v mbsync)"; then
+    printf 'Missing dependency: install isync (for example, brew install isync).\n' >&2
+    exit 1
+fi
+readonly MBSYNC
+
+usage() {
+    cat <<'EOF'
+Usage: mail-archive COMMAND
+
+  backup   Download every selectable IMAP folder; never delete locally/remotely
+  preview  List counts of unmarked messages older than 365 days
+  mark     Mark those old messages as \\Deleted after a successful backup
+  expunge  Permanently remove all messages already marked \\Deleted
+  status   Show archive size, message count, and last backup receipt
+
+Dependency: isync (mbsync), installable with: brew install isync
+
+Run backup first, inspect the configured archive's eml/ folder, then preview and mark.
+Expunge is deliberately separate and asks for exact confirmation.
+EOF
+}
+
+make_eml_view() {
+    mkdir -p "$EML_DIR"
+    declare -A linked=()
+    while IFS= read -r -d '' existing; do
+        linked["$(stat -c '%d:%i' "$existing")"]=1
+    done < <(find "$EML_DIR" -type f -name '*.eml' -print0)
+    while IFS= read -r -d '' message; do
+        inode="$(stat -c '%d:%i' "$message")"
+        [[ -n "${linked[$inode]:-}" ]] && continue
+        relative="${message#"$MAILDIR"/}"
+        folder="${relative%/*}"
+        filename="${relative##*/}"
+        destination="$EML_DIR/$folder/$filename.eml"
+        mkdir -p "${destination%/*}"
+        [[ -e "$destination" ]] || ln "$message" "$destination"
+        linked["$inode"]=1
+    done < <(find "$MAILDIR" -type f \( -path '*/cur/*' -o -path '*/new/*' \) -print0)
+}
+
+require_backup() {
+    if [[ ! -f "$RECEIPT" ]]; then
+        printf 'Refusing cleanup: no successful backup receipt. Run: mail-archive backup\n' >&2
+        exit 1
+    fi
+}
+
+require_recent_backup() {
+    require_backup
+    if [[ -z "$(find "$RECEIPT" -mmin -1440 -print)" ]]; then
+        printf 'Refusing to mark mail: the last backup is over 24 hours old. Run: mail-archive backup\n' >&2
+        exit 1
+    fi
+}
+
+old_unmarked_messages() {
+    find "$MAILDIR" -type f \( -path '*/cur/*' -o -path '*/new/*' \) \
+        ! -newermt '365 days ago' ! -name '*:2,*T*' -print0
+}
+
+preview_old() {
+    local count=0 message relative folder
+    declare -A folders=()
+    while IFS= read -r -d '' message; do
+        relative="${message#"$MAILDIR"/}"
+        folder="${relative%%/cur/*}"
+        [[ "$folder" == "$relative" ]] && folder="${relative%%/new/*}"
+        folders["$folder"]=$(( ${folders["$folder"]:-0} + 1 ))
+        count=$((count + 1))
+    done < <(old_unmarked_messages)
+    for folder in "${!folders[@]}"; do
+        printf '%s: %d message(s)\n' "$folder" "${folders[$folder]}"
+    done
+    printf 'preview total: %d message(s) older than 365 days\n' "$count"
+}
+
+pending_marks() {
+    find "$MAILDIR" -type f -path '*/cur/*' -name '*:2,*T*' -printf . | wc -c
+}
+
+mark_old_locally() {
+    local message directory filename destination
+    local -a messages=()
+    mapfile -d '' -t messages < <(old_unmarked_messages)
+    for message in "${messages[@]}"; do
+        directory="${message%/*}"
+        filename="${message##*/}"
+        if [[ "$filename" == *:2,* ]]; then
+            destination="$directory/$filename"T
+        else
+            destination="${directory%/new}/cur/$filename:2,T"
+        fi
+        mv -- "$message" "$destination"
+    done
+}
+
+case "${1:-}" in
+    backup)
+        mkdir -p "$MAILDIR"
+        "$MBSYNC" -c "$CONFIG_DIR/mbsyncrc" mail-archive
+        make_eml_view
+        date --iso-8601=seconds > "$RECEIPT"
+        printf 'Backup verified by mbsync. Offline messages: %s\n' \
+            "$(find "$MAILDIR" -type f \( -path '*/cur/*' -o -path '*/new/*' \) -printf . | wc -c)"
+        ;;
+    preview)
+        require_backup
+        preview_old
+        ;;
+    mark)
+        require_recent_backup
+        printf 'Locally pending deletion flags: %s\n' "$(pending_marks)"
+        read -r -p 'Type MARK to flag old messages and send all pending flags to IMAP: ' answer
+        [[ "$answer" == 'MARK' ]] || { printf 'Cancelled.\n'; exit 1; }
+        mark_old_locally
+        "$MBSYNC" -c "$CONFIG_DIR/mbsyncrc" --push-flags mail-archive
+        printf 'Old messages are marked \\Deleted on the server; nothing was expunged.\n'
+        ;;
+    expunge)
+        require_backup
+        printf '%s\n' 'WARNING: this permanently expunges every message currently marked \\Deleted in all selectable folders.'
+        read -r -p 'Type EXPUNGE to continue: ' answer
+        [[ "$answer" == 'EXPUNGE' ]] || { printf 'Cancelled.\n'; exit 1; }
+        "$MBSYNC" -c "$CONFIG_DIR/mbsyncrc" --noop --expunge-far mail-archive
+        ;;
+    status)
+        if [[ -f "$RECEIPT" ]]; then printf 'Last successful backup: '; cat "$RECEIPT"; else printf 'No successful backup yet.\n'; fi
+        if [[ -d "$MAILDIR" ]]; then
+            printf 'Offline messages: %s\n' "$(find "$MAILDIR" -type f \( -path '*/cur/*' -o -path '*/new/*' \) -printf . | wc -c)"
+            printf 'Locally marked deleted: %s\n' "$(pending_marks)"
+            du -sh "$ARCHIVE_DIR"
+        fi
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+esac
