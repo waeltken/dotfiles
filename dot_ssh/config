@@ -1,3 +1,4 @@
+Include ~/.ssh/config.platform
 Include ~/.ssh/config.local
 
 AddKeysToAgent yes

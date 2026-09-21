@@ -6,5 +6,12 @@ disable_lock.reg
 .pi/agent/sessions/
 {{ if ne .chezmoi.os "windows" }}
 AppData/
+windows_reg_files/
+.config/komorebi/
+.config/yasb/
+.config/whkdrc
 {{ end }}
-
+{{ if eq .chezmoi.os "windows" }}
+run_after_update_fisher.sh
+.local/bin/wsl-ssh-agent
+{{ end }}

@@ -1,3 +1,6 @@
+{{- $is_windows := eq .chezmoi.os "windows" -}}
+{{- $is_linux := eq .chezmoi.os "linux" -}}
+{{- $is_wsl := and $is_linux (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
 {{- $name := promptStringOnce . "name" "Full Name e.g. for git commits" -}}
 {{- $email := promptStringOnce . "email" "Email Address e.g. for git commits" -}}
 {{- $signing_key := promptStringOnce . "signing_key" "GPG Signing Key (leave blank to disable commit signing)" -}}
@@ -16,3 +19,7 @@
     mail_archive_imap_port = {{ $mail_archive_imap_port | quote }}
     mail_archive_imap_user = {{ $mail_archive_imap_user | quote }}
     mail_archive_directory = {{ $mail_archive_directory | quote }}
+    signing_key = {{ $signing_key | quote }}
+    is_windows = {{ $is_windows }}
+    is_linux = {{ $is_linux }}
+    is_wsl = {{ $is_wsl }}

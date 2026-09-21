@@ -24,3 +24,9 @@ test -f "/home/clwaltke/.trainingmanualrc" && source "/home/clwaltke/.trainingma
 # Add NVM to environment
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+{{- if .is_wsl }}
+if [ -x "$HOME/.local/bin/wsl-ssh-agent" ]; then
+  eval "$("$HOME/.local/bin/wsl-ssh-agent" env sh)"
+fi
+{{- end }}
