@@ -1,6 +1,6 @@
 # Clemens Wältken's dotfiles
 
-> A reproducible, keyboard-first development environment for macOS, Linux, Windows, and Windows + WSL—managed with [chezmoi](https://www.chezmoi.io/).
+> A reproducible, keyboard-first development environment for macOS, Linux, Windows, and Windows + WSL, managed with [chezmoi](https://www.chezmoi.io/).
 
 This repository turns a fresh machine into the environment I use every day: a capable shell, a durable terminal workflow, Neovim, and (even on Windows) a tiling desktop built around Komorebi.
 
@@ -41,7 +41,7 @@ The complete keyboard map lives in [`tmux.md`](tmux.md). The short version:
 The first apply is interactive. Chezmoi asks for:
 
 - your full name and email for Git commits;
-- an optional GPG signing key—leave it blank to disable signing;
+- an optional GPG signing key; leave it blank to disable signing;
 - your GitHub username, used to populate `authorized_keys` from your public GitHub keys.
 
 Do not run the first apply from a non-interactive script. You will also need network access, Git, curl, and a terminal.
@@ -144,7 +144,7 @@ There is no Scoop manifest in this repository, so the package list is explicit. 
 chezmoi init --apply waeltken
 ```
 
-Running chezmoi natively ensures that Windows-only files—including `AppData\Roaming\topgrade.toml`—land in the profile used by Windows applications.
+Running chezmoi natively ensures that Windows-only files, including `AppData\Roaming\topgrade.toml`, land in the profile used by Windows applications.
 
 Set Komorebi's configuration directory, then open a new PowerShell session so child processes inherit it:
 
@@ -264,6 +264,10 @@ nvim --headless '+checkhealth' +qa
 
 `dot_config/nvim/create_lazy-lock.json` is a create-only lock snapshot. Chezmoi materializes `lazy-lock.json` when appropriate; the generated file is intentionally not tracked here.
 
+After updating plugins, run `:TSUpdate`, wait for parser installation to finish, and restart Neovim so it loads the rebuilt parsers. Plugin queries and compiled Tree-sitter parsers must stay in sync.
+
+If Noice's command-line popup disappears with a Tree-sitter `Invalid node type` error, check `~/.local/state/nvim/noice.log`. A stale Vim parser can break `:` commands even in a Git commit buffer; run `:TSUpdate vim`, wait for completion, and restart Neovim. Disabling Noice or changing command-mode keymaps is not needed for this mismatch.
+
 ### tmux
 
 Chezmoi fetches [TPM](https://github.com/tmux-plugins/tpm) into `~/.tmux/plugins/tpm` through `.chezmoiexternal.toml`.
@@ -354,7 +358,7 @@ chezmoi update
 
 ### Reload Windows programs
 
-After a native Windows apply—or after using the WSL copy fallback—run in PowerShell:
+After a native Windows apply, or after using the WSL copy fallback, run in PowerShell:
 
 ```powershell
 taskkill /f /im whkd.exe
@@ -435,7 +439,7 @@ A few things are deliberately manual:
 
 - **No symlinks.** Chezmoi renders and copies files; the repository contains no `link_*` sources.
 - **No automatic Windows startup.** Start Komorebi/whkd and YASB through the Windows mechanism you prefer.
-- **No automatic registry import.** `windows_reg_files/set_timezone_to_utc.reg` is optional and requires an elevated PowerShell. `disable_lock.reg` is legacy and must not be imported—`Win+L` remains the native Windows lock shortcut.
+- **No automatic registry import.** `windows_reg_files/set_timezone_to_utc.reg` is optional and requires an elevated PowerShell. `disable_lock.reg` is legacy and must not be imported; `Win+L` remains the native Windows lock shortcut.
 - **No committed credentials.** Pi sessions, authentication files, GPG material, GitHub auth, and Copilot auth remain local.
 - **Optional Watchman automation.** `dot_bin/executable_chezmoi-watchman` is only for users who explicitly want source changes to trigger `chezmoi apply --force`.
 
