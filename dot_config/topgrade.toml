@@ -15,7 +15,7 @@
 # sudo_command = "sudo"
 
 # Disable specific steps - same options as the command line flag
-# disable = ["system", "emacs"]
+disable = ["system", "toolbx", "tmux", "sdkman", "pipx", "poetry", "pi", "npm", "pnpm", "skills", "containers", "chezmoi"]
 
 # Ignore failures for these steps
 # ignore_failures = ["powershell"]
