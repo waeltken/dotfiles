@@ -202,6 +202,29 @@ Do not point one installation at the other environment's home directory. Each fi
 
 WezTerm expects the WSL distribution to be named `Ubuntu`. If yours has another name, update `config.default_domain` in `dot_config/wezterm/wezterm.lua` before launching WezTerm.
 
+### SSH keys in WSL
+
+WSL does not hold SSH private keys. `~/.local/bin/wsl-ssh-agent` relays `~/.ssh/agent.sock` to the Windows `ssh-agent`, and the shell startup files point `SSH_AUTH_SOCK` at that socket. The relay needs three things:
+
+```powershell
+# Windows, elevated: run the agent at login and load the key once
+Set-Service ssh-agent -StartupType Automatic
+Start-Service ssh-agent
+ssh-add $HOME\.ssh\id_ed25519
+
+# Windows: the named-pipe bridge. Use winget; Defender policies can block Scoop shims.
+winget install --id albertony.npiperelay -e
+```
+
+```sh
+# Ubuntu
+sudo apt install -y socat
+```
+
+Open a new WSL shell, then check that `ssh-add -l` lists the Windows key. If the relay cannot start, the shell prints a `wsl-ssh-agent:` line naming the missing piece and leaves `SSH_AUTH_SOCK` unset.
+
+Keep private keys out of `~/.ssh` in WSL: ssh falls back to key files there and hides a broken relay. Native Windows Git is configured to use Windows OpenSSH, so it reads the same agent.
+
 <details>
 <summary><strong>Fallback: copy Windows files from WSL</strong></summary>
 

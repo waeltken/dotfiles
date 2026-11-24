@@ -1,0 +1,7 @@
+{{- if .is_wsl }}
+Host *
+    IdentityAgent ~/.ssh/agent.sock
+{{- else }}
+# Managed by chezmoi.
+# Platform-specific SSH settings live here.
+{{- end }}

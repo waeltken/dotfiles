@@ -1,0 +1,7 @@
+{{- if .is_wsl }}
+if status is-interactive
+    if test -x ~/.local/bin/wsl-ssh-agent
+        ~/.local/bin/wsl-ssh-agent env fish | source
+    end
+end
+{{- end }}

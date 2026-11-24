@@ -38,6 +38,10 @@
 [core]
   excludesfile = ~/.gitignore_global
   editor = nvim
+{{- if eq .chezmoi.os "windows" }}
+  # Git's bundled ssh cannot reach the Windows ssh-agent.
+  sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+{{- end }}
 [merge]
   tool = vscode
 [mergetool "nvim"]

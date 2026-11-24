@@ -1,5 +1,6 @@
-Include ~/.ssh/config.platform
+# ssh keeps the first value it sees, so local overrides come before platform defaults.
 Include ~/.ssh/config.local
+Include ~/.ssh/config.platform
 
 AddKeysToAgent yes
 
