@@ -106,8 +106,10 @@ start_relay() {
     pkill -u "$(id -u)" -f "UNIX-LISTEN:$agent_sock," 2>/dev/null || true
     rm -f "$agent_sock"
 
-    # 9>&- keeps the relay from inheriting (and so holding) the startup lock.
-    nohup "$socat_bin" \
+    # setsid, not nohup: socat installs its own SIGHUP handler, so it would die
+    # with the shell that started it. 9>&- keeps the relay from inheriting (and
+    # so holding) the startup lock.
+    setsid "$socat_bin" \
         "UNIX-LISTEN:$agent_sock,fork,mode=600,unlink-close=0" \
         "EXEC:$relay_link -ei -s $agent_pipe,nofork" \
         >/dev/null 2>&1 9>&- &
