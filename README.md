@@ -132,10 +132,11 @@ Run this section in **native PowerShell**, not in WSL.
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 irm get.scoop.sh | iex
 scoop bucket add extras
-scoop install git chezmoi neovim wezterm komorebi whkd yasb oh-my-posh
+scoop install git chezmoi neovim wezterm komorebi yasb oh-my-posh
+winget install --id LGUG2Z.whkd -e
 ```
 
-There is no Scoop manifest in this repository, so the package list is explicit. The Homebrew `Brewfile` does not install Windows GUI applications.
+There is no Scoop manifest in this repository, so the package list is explicit. whkd comes from winget rather than Scoop because enterprise Defender policies can block the Scoop shim (`scoop\shims\whkd.exe`); the MSI puts the real binary on `PATH`. The Homebrew `Brewfile` does not install Windows GUI applications.
 
 ### 2. Apply the Windows configuration
 
