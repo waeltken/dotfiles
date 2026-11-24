@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A practical three-day tmux training plan tailored to a Ctrl+Space configuration.">
+  <meta name="theme-color" content="#11111b">
+  <title>Three Days to Effective tmux</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --crust: #11111b;
+      --mantle: #181825;
+      --base: #1e1e2e;
+      --surface: #313244;
+      --surface-2: #45475a;
+      --overlay: #6c7086;
+      --text: #cdd6f4;
+      --muted: #a6adc8;
+      --blue: #89b4fa;
+      --lavender: #b4befe;
+      --green: #a6e3a1;
+      --yellow: #f9e2af;
+      --peach: #fab387;
+      --mauve: #cba6f7;
+      --red: #f38ba8;
+      --border: rgba(205, 214, 244, .14);
+      --shadow: 0 24px 70px rgba(0, 0, 0, .32);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--crust); }
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 0%, rgba(137, 180, 250, .14), transparent 28rem),
+        radial-gradient(circle at 90% 12%, rgba(203, 166, 247, .1), transparent 25rem),
+        var(--crust);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    a { color: var(--blue); text-underline-offset: .2em; }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    code, kbd, pre { font-family: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+
+    .skip-link {
+      position: fixed;
+      z-index: 100;
+      top: .75rem;
+      left: .75rem;
+      padding: .6rem .9rem;
+      border-radius: .5rem;
+      color: var(--crust);
+      background: var(--yellow);
+      font-weight: 800;
+      transform: translateY(-180%);
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .shell {
+      width: min(1240px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2rem 0 5rem;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(1.5rem, 5vw, 4rem);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      background: linear-gradient(135deg, rgba(49, 50, 68, .95), rgba(24, 24, 37, .96));
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: ">_";
+      position: absolute;
+      right: clamp(1rem, 6vw, 5rem);
+      bottom: -1.5rem;
+      color: rgba(137, 180, 250, .06);
+      font: 900 clamp(8rem, 22vw, 19rem)/1 monospace;
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      margin: 0 0 1rem;
+      color: var(--blue);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      width: 2rem;
+      height: 2px;
+      content: "";
+      background: currentColor;
+    }
+    h1, h2, h3 { line-height: 1.12; text-wrap: balance; }
+    h1 {
+      max-width: 13ch;
+      margin: 0;
+      font-size: clamp(2.75rem, 8vw, 6.8rem);
+      letter-spacing: -.055em;
+    }
+    .hero h1 span { color: var(--blue); }
+    .hero-copy {
+      max-width: 45rem;
+      margin: 1.25rem 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.25rem);
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .65rem;
+      margin-top: 1.75rem;
+    }
+    .pill {
+      padding: .4rem .72rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(17, 17, 27, .55);
+      font-size: .84rem;
+      font-weight: 700;
+    }
+    .pill strong { color: var(--text); }
+
+    .toolbar {
+      position: sticky;
+      z-index: 20;
+      top: .75rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      margin: 1rem 0 2rem;
+      padding: .8rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: .85rem;
+      background: rgba(24, 24, 37, .88);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, .24);
+      backdrop-filter: blur(16px);
+    }
+    .progress-copy {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      min-width: 0;
+    }
+    .progress-copy strong { white-space: nowrap; }
+    .progress-track {
+      width: min(24rem, 100%);
+      height: .48rem;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--surface);
+    }
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), var(--mauve));
+      transition: width .25s ease;
+    }
+    .actions { display: flex; gap: .5rem; }
+    .button {
+      min-height: 2.5rem;
+      padding: .55rem .8rem;
+      border: 1px solid var(--border);
+      border-radius: .55rem;
+      background: var(--surface);
+      cursor: pointer;
+      font-weight: 750;
+    }
+    .button:hover { border-color: var(--blue); background: var(--surface-2); }
+    .button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 3px solid var(--yellow);
+      outline-offset: 3px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 15rem minmax(0, 1fr);
+      gap: 2rem;
+      align-items: start;
+    }
+    .side-nav {
+      position: sticky;
+      top: 6.3rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      background: var(--mantle);
+    }
+    .side-nav p {
+      margin: 0 0 .6rem;
+      color: var(--overlay);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .side-nav a {
+      display: block;
+      padding: .55rem .65rem;
+      border-radius: .45rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 650;
+    }
+    .side-nav a:hover { color: var(--text); background: var(--surface); }
+
+    main { min-width: 0; }
+    .section {
+      margin-bottom: 1.25rem;
+      padding: clamp(1.1rem, 3vw, 2rem);
+      border: 1px solid var(--border);
+      border-radius: 1.15rem;
+      background: var(--mantle);
+      scroll-margin-top: 6.5rem;
+    }
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
+    .section h2 { margin: 0; font-size: clamp(1.55rem, 3vw, 2.2rem); }
+    .section h3 { margin: 1.7rem 0 .65rem; font-size: 1.05rem; }
+    .section p { margin: .5rem 0 1rem; }
+    .subtle { color: var(--muted); }
+    .time {
+      flex: 0 0 auto;
+      padding: .35rem .65rem;
+      border-radius: 999px;
+      color: var(--crust);
+      background: var(--accent, var(--blue));
+      font-size: .75rem;
+      font-weight: 850;
+    }
+
+    .mental-model { --accent: var(--lavender); }
+    .day-one { --accent: var(--blue); }
+    .day-two { --accent: var(--green); }
+    .day-three { --accent: var(--peach); }
+    .reference { --accent: var(--mauve); }
+    .section { border-top: 3px solid var(--accent); }
+
+    .terminal {
+      overflow: hidden;
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+      border-radius: .8rem;
+      background: var(--crust);
+      box-shadow: inset 0 1px rgba(255, 255, 255, .03);
+    }
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: .42rem;
+      padding: .65rem .8rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .terminal-bar i { width: .68rem; height: .68rem; border-radius: 50%; background: var(--red); }
+    .terminal-bar i:nth-child(2) { background: var(--yellow); }
+    .terminal-bar i:nth-child(3) { background: var(--green); }
+    .terminal pre {
+      margin: 0;
+      padding: 1rem;
+      overflow-x: auto;
+      color: var(--green);
+      font-size: .88rem;
+      line-height: 1.55;
+    }
+    code {
+      padding: .13rem .35rem;
+      border-radius: .3rem;
+      color: var(--green);
+      background: var(--crust);
+      font-size: .9em;
+    }
+    kbd {
+      display: inline-block;
+      padding: .18rem .42rem;
+      border: 1px solid var(--surface-2);
+      border-bottom-width: 2px;
+      border-radius: .35rem;
+      color: var(--text);
+      background: var(--crust);
+      font-size: .78rem;
+      font-weight: 800;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    .concept-grid, .window-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .75rem;
+      margin-top: 1rem;
+    }
+    .concept, .window-card {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: .7rem;
+      background: var(--base);
+    }
+    .concept strong, .window-card strong { display: block; margin-bottom: .25rem; color: var(--accent); }
+    .concept p, .window-card p { margin: 0; color: var(--muted); font-size: .88rem; }
+
+    .binding-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .55rem;
+      margin: 1rem 0;
+    }
+    .binding {
+      display: flex;
+      justify-content: space-between;
+      gap: .75rem;
+      align-items: center;
+      min-height: 3.2rem;
+      padding: .65rem .75rem;
+      border: 1px solid var(--border);
+      border-radius: .6rem;
+      background: var(--base);
+    }
+    .binding span:last-child { color: var(--muted); font-size: .86rem; text-align: right; }
+
+    .checklist {
+      display: grid;
+      gap: .5rem;
+      margin: .75rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .check-item label {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: .7rem;
+      align-items: start;
+      padding: .72rem .8rem;
+      border: 1px solid var(--border);
+      border-radius: .6rem;
+      background: var(--base);
+      cursor: pointer;
+    }
+    .check-item label:hover { border-color: color-mix(in srgb, var(--accent), transparent 40%); }
+    .check-item input {
+      width: 1.05rem;
+      height: 1.05rem;
+      margin: .23rem 0 0;
+      accent-color: var(--accent);
+    }
+    .check-item input:checked + span { color: var(--overlay); text-decoration: line-through; }
+
+    .callout {
+      margin: 1rem 0;
+      padding: .85rem 1rem;
+      border: 1px solid color-mix(in srgb, var(--accent), transparent 55%);
+      border-left: 4px solid var(--accent);
+      border-radius: .6rem;
+      background: color-mix(in srgb, var(--accent), transparent 91%);
+    }
+    .callout strong { color: var(--accent); }
+    .callout p { margin: .25rem 0 0; }
+
+    .success {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: .7rem;
+      color: var(--crust);
+      background: var(--accent);
+    }
+    .success h3 { margin: 0 0 .5rem; color: inherit; }
+    .success ul { margin: 0; padding-left: 1.25rem; }
+
+    .layout-diagram {
+      margin: 1rem 0;
+      padding: .9rem;
+      border: 1px solid var(--border);
+      border-radius: .7rem;
+      background: var(--crust);
+    }
+    .diagram-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      min-height: 13rem;
+      overflow: hidden;
+      border: 2px solid var(--overlay);
+      border-radius: .35rem;
+    }
+    .pane {
+      display: grid;
+      place-items: center;
+      padding: .75rem;
+      color: var(--muted);
+      background: var(--base);
+      font: 750 .85rem/1.4 monospace;
+      text-align: center;
+    }
+    .pane:first-child { grid-row: 1 / 3; border-right: 2px solid var(--overlay); color: var(--blue); }
+    .pane:nth-child(2) { border-bottom: 2px solid var(--overlay); color: var(--green); }
+    .pane:nth-child(3) { color: var(--peach); }
+
+    table {
+      width: 100%;
+      margin: 1rem 0;
+      border-collapse: collapse;
+      border: 1px solid var(--border);
+      background: var(--base);
+      font-size: .9rem;
+    }
+    th, td { padding: .7rem .8rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+    th { color: var(--accent); background: var(--surface); }
+    tr:last-child td { border-bottom: 0; }
+
+    .cheat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .8rem;
+    }
+    .cheat-card {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: .7rem;
+      background: var(--base);
+    }
+    .cheat-card h3 { margin: 0 0 .75rem; color: var(--accent); }
+    .cheat-row {
+      display: grid;
+      grid-template-columns: minmax(6.5rem, auto) 1fr;
+      gap: .7rem;
+      padding: .32rem 0;
+      color: var(--muted);
+      font-size: .86rem;
+    }
+    .cheat-row span:first-child { color: var(--text); font-family: monospace; font-weight: 750; }
+
+    footer {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+    }
+    footer code { color: var(--blue); }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .side-nav { position: static; display: flex; gap: .35rem; overflow-x: auto; }
+      .side-nav p { display: none; }
+      .side-nav a { flex: 0 0 auto; }
+      .concept-grid, .window-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 650px) {
+      .shell { width: min(100% - 1rem, 1240px); padding-top: .5rem; }
+      .hero { border-radius: 1rem; }
+      .toolbar { position: static; grid-template-columns: 1fr; }
+      .actions { width: 100%; }
+      .button { flex: 1; }
+      .binding-list, .cheat-grid { grid-template-columns: 1fr; }
+      .section-heading { display: block; }
+      .time { display: inline-block; margin-top: .65rem; }
+      .binding { align-items: flex-start; flex-direction: column; }
+      .binding span:last-child { text-align: left; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .progress-bar { transition: none; }
+    }
+    @media print {
+      @page { margin: 14mm; }
+      :root { color-scheme: light; }
+      html, body { color: #111; background: #fff; font-size: 9.5pt; }
+      .shell { width: 100%; padding: 0; }
+      .hero, .section, .concept, .window-card, .binding, .check-item label, .cheat-card, table, .layout-diagram, .terminal {
+        color: #111;
+        background: #fff !important;
+        box-shadow: none;
+      }
+      .hero { padding: 1rem; }
+      .hero::after, .toolbar, .side-nav, footer { display: none; }
+      .layout { display: block; }
+      .section { padding: .8rem; break-inside: avoid; }
+      .section p, .subtle, .concept p, .window-card p, .binding span:last-child, .cheat-row { color: #333; }
+      .day-one, .day-two, .day-three { break-before: page; }
+      code, kbd, .terminal pre { color: #111; background: #f5f5f5; }
+      .success { color: #111; background: #fff; border: 2px solid var(--accent); }
+      .check-item input { appearance: none; width: .85rem; height: .85rem; border: 1px solid #111; }
+      .check-item input:checked::after { content: "✓"; position: relative; top: -.35rem; font-size: 1rem; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#plan">Skip to the training plan</a>
+  <div class="shell">
+    <header class="hero">
+      <p class="eyebrow">Your practical tmux sprint</p>
+      <h1>Three days to <span>effective tmux.</span></h1>
+      <p class="hero-copy">Build one durable workflow through deliberate practice: sessions for persistence, windows for tasks, and panes for tightly related commands.</p>
+      <div class="hero-meta" aria-label="Plan details">
+        <span class="pill"><strong>3 days</strong> of practice</span>
+        <span class="pill"><strong>60–90 min</strong> per day</span>
+        <span class="pill">Tailored to <strong>Ctrl+Space</strong></span>
+        <span class="pill"><strong>Keyboard-first</strong> workflow</span>
+      </div>
+    </header>
+
+    <div class="toolbar" aria-label="Training progress">
+      <div class="progress-copy">
+        <strong id="progress-label">0 of 18 complete</strong>
+        <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progress-bar"></div></div>
+      </div>
+      <div class="actions">
+        <button class="button" id="reset-progress" type="button">Reset</button>
+        <button class="button" type="button" onclick="window.print()">Print plan</button>
+      </div>
+    </div>
+
+    <div class="layout">
+      <nav class="side-nav" aria-label="Plan navigation">
+        <p>Plan</p>
+        <a href="#mental-model">Mental model</a>
+        <a href="#day-1">Day 1 · Persist</a>
+        <a href="#day-2">Day 2 · Arrange</a>
+        <a href="#day-3">Day 3 · Operate</a>
+        <a href="#cheat-sheet">Cheat sheet</a>
+      </nav>
+
+      <main id="plan">
+        <section class="section mental-model" id="mental-model">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Before you begin</p>
+              <h2>Keep the layers distinct</h2>
+            </div>
+          </div>
+          <p class="subtle">For the next three days, do all ordinary terminal work inside tmux. Use WezTerm tabs only when you need a different shell or domain, such as WSL, PowerShell, or SSH.</p>
+
+          <div class="terminal" aria-label="tmux hierarchy diagram">
+            <div class="terminal-bar"><i></i><i></i><i></i></div>
+            <pre>tmux server
+└── session: main
+    ├── window 1: editor
+    │   ├── pane: nvim
+    │   └── pane: tests
+    └── window 2: services
+        └── pane: logs</pre>
+          </div>
+
+          <div class="concept-grid">
+            <div class="concept"><strong>Session</strong><p>A persistent workspace. Usually one durable session per host or project context.</p></div>
+            <div class="concept"><strong>Window</strong><p>A full-screen task inside a session: editor, shell, services, or logs.</p></div>
+            <div class="concept"><strong>Pane</strong><p>A subdivision for commands that belong to the same immediate task.</p></div>
+          </div>
+
+          <div class="callout">
+            <strong>How to read a binding</strong>
+            <p>For <kbd>Prefix</kbd> + <kbd>v</kbd>, press <kbd>Ctrl</kbd> + <kbd>Space</kbd>, release both, then press <kbd>v</kbd>.</p>
+          </div>
+        </section>
+
+        <section class="section day-one" id="day-1">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Day 1 · Persist</p>
+              <h2>Sessions and windows</h2>
+              <p class="subtle">Stop losing terminal state. Navigate complete tasks without thinking.</p>
+            </div>
+            <span class="time">60 minutes</span>
+          </div>
+
+          <h3>Start or reattach</h3>
+          <div class="terminal">
+            <div class="terminal-bar"><i></i><i></i><i></i></div>
+            <pre><code>tmux new-session -A -s main</code></pre>
+          </div>
+
+          <h3>Bindings to learn</h3>
+          <div class="binding-list">
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>Ctrl+C</kbd></span><span>Create window</span></div>
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>r</kbd></span><span>Rename window</span></div>
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>1…9</kbd></span><span>Select window</span></div>
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>H</kbd> / <kbd>L</kbd></span><span>Previous / next window</span></div>
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>w</kbd></span><span>Choose a window</span></div>
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>Ctrl+A</kbd></span><span>Return to last window</span></div>
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>Ctrl+D</kbd></span><span>Detach safely</span></div>
+          </div>
+
+          <div class="callout">
+            <strong>Configuration-specific warning</strong>
+            <p>In your setup, <kbd>Prefix</kbd> + <kbd>c</kbd> kills the current pane. It does not create a new window.</p>
+          </div>
+
+          <h3>Practice checklist</h3>
+          <ul class="checklist">
+            <li class="check-item"><label><input type="checkbox" data-task="d1-1"><span>Create three windows named <strong>editor</strong>, <strong>shell</strong>, and <strong>logs</strong>.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d1-2"><span>Open your editor in <strong>editor</strong> and run Git or shell commands in <strong>shell</strong>.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d1-3"><span>Run <code>watch -n 2 date</code> in <strong>logs</strong>.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d1-4"><span>Navigate using only window numbers, <kbd>H</kbd>/<kbd>L</kbd>, and last-window. Do not click the status bar.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d1-5"><span>Detach, close the terminal, open a new terminal, and reattach to <strong>main</strong>.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d1-6"><span>Confirm your windows and running command survived.</span></label></li>
+          </ul>
+
+          <div class="success">
+            <h3>Day 1 exit test</h3>
+            <ul>
+              <li>Create and rename a window without looking up the binding.</li>
+              <li>Switch directly to a numbered window.</li>
+              <li>Detach and reattach without losing work.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section day-two" id="day-2">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Day 2 · Arrange</p>
+              <h2>Panes and working layouts</h2>
+              <p class="subtle">Build useful layouts without accumulating unnecessary terminal tabs.</p>
+            </div>
+            <span class="time">75 minutes</span>
+          </div>
+
+          <h3>Bindings to learn</h3>
+          <div class="binding-list">
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>v</kbd></span><span>Split left / right</span></div>
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>s</kbd></span><span>Split top / bottom</span></div>
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>h j k l</kbd></span><span>Focus panes</span></div>
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>z</kbd></span><span>Toggle pane zoom</span></div>
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>, . - =</kbd></span><span>Resize panes</span></div>
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>x</kbd></span><span>Swap pane downward</span></div>
+            <div class="binding"><span><kbd>Prefix</kbd> + <kbd>c</kbd></span><span>Kill current pane</span></div>
+          </div>
+
+          <h3>Build this development layout</h3>
+          <div class="layout-diagram" aria-label="Development pane layout">
+            <div class="diagram-grid">
+              <div class="pane">EDITOR</div>
+              <div class="pane">SHELL / TESTS</div>
+              <div class="pane">LOGS</div>
+            </div>
+          </div>
+          <p class="subtle">Open your project and editor. Press <kbd>Prefix</kbd> + <kbd>v</kbd>, then split the right pane with <kbd>Prefix</kbd> + <kbd>s</kbd>. New panes inherit the current working directory.</p>
+
+          <h3>Copy-mode drill</h3>
+          <div class="terminal">
+            <div class="terminal-bar"><i></i><i></i><i></i></div>
+            <pre><code>printf 'line %03d\n' {1..100}</code></pre>
+          </div>
+          <p>Enter copy mode with <kbd>Prefix</kbd> + <kbd>[</kbd>. Navigate with vi keys, use <kbd>/</kbd> to search, <kbd>v</kbd> to begin a selection, and <kbd>y</kbd> to copy.</p>
+
+          <h3>Practice checklist</h3>
+          <ul class="checklist">
+            <li class="check-item"><label><input type="checkbox" data-task="d2-1"><span>Create the three-pane development layout shown above.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d2-2"><span>Move through every pane twice using only <kbd>h</kbd>, <kbd>j</kbd>, <kbd>k</kbd>, and <kbd>l</kbd>.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d2-3"><span>Resize every boundary, then make the editor the largest pane.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d2-4"><span>Zoom the editor for focused work, then restore the original layout.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d2-5"><span>Generate scrollback, search for <code>line 050</code>, select it, and copy it.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d2-6"><span>Destroy and recreate the complete layout in under two minutes.</span></label></li>
+          </ul>
+
+          <div class="success">
+            <h3>Day 2 exit test</h3>
+            <ul>
+              <li>Recreate the development layout from memory.</li>
+              <li>Navigate and zoom panes without touching the mouse.</li>
+              <li>Search and copy from terminal history.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section day-three" id="day-3">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Day 3 · Operate</p>
+              <h2>Your daily workflow</h2>
+              <p class="subtle">Turn the mechanics into a repeatable system for local and remote work.</p>
+            </div>
+            <span class="time">90 minutes</span>
+          </div>
+
+          <h3>Adopt a durable structure</h3>
+          <div class="window-grid">
+            <div class="window-card"><strong>editor</strong><p>Editor and language tooling</p></div>
+            <div class="window-card"><strong>shell</strong><p>Git and general commands</p></div>
+            <div class="window-card"><strong>services</strong><p>Development servers</p></div>
+            <div class="window-card"><strong>logs</strong><p>Logs and diagnostics</p></div>
+            <div class="window-card"><strong>remote</strong><p>SSH work when appropriate</p></div>
+          </div>
+
+          <h3>Session drill</h3>
+          <div class="terminal">
+            <div class="terminal-bar"><i></i><i></i><i></i></div>
+            <pre><code>tmux new-session -d -s scratch</code></pre>
+          </div>
+          <p>Use <kbd>Prefix</kbd> + <kbd>S</kbd> to switch between <strong>main</strong> and <strong>scratch</strong>. Detach with <kbd>Prefix</kbd> + <kbd>Ctrl+D</kbd>. Reload your configuration with <kbd>Prefix</kbd> + <kbd>R</kbd>.</p>
+          <p>Remove the disposable session when finished:</p>
+          <div class="terminal">
+            <div class="terminal-bar"><i></i><i></i><i></i></div>
+            <pre><code>tmux kill-session -t scratch</code></pre>
+          </div>
+
+          <h3>Parallel-command drill</h3>
+          <p>Create two disposable panes and toggle synchronized input with <kbd>Prefix</kbd> + <kbd>*</kbd>. Run <code>pwd</code>, confirm it appears in both panes, then immediately press <kbd>Prefix</kbd> + <kbd>*</kbd> again to disable synchronization.</p>
+          <div class="callout">
+            <strong>Use synchronized panes carefully</strong>
+            <p>Every command—including a destructive one—is sent to every synchronized pane.</p>
+          </div>
+
+          <h3>Local and remote rule</h3>
+          <p>Run tmux on the machine whose processes need to survive. Local WSL tmux preserves local work; remote tmux preserves work on the remote host.</p>
+          <div class="terminal">
+            <div class="terminal-bar"><i></i><i></i><i></i></div>
+            <pre><code>ssh server
+tmux new-session -A -s main</code></pre>
+          </div>
+          <p class="subtle">Avoid nested sessions. If <code>$TMUX</code> is non-empty, you are already inside tmux.</p>
+
+          <h3>Practice checklist</h3>
+          <ul class="checklist">
+            <li class="check-item"><label><input type="checkbox" data-task="d3-1"><span>Create <strong>scratch</strong>, switch to it with the chooser, return to <strong>main</strong>, and remove it.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d3-2"><span>Synchronize two disposable panes, run <code>pwd</code>, and disable synchronization.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d3-3"><span>Run a real work session with at least three named tmux windows and no unnecessary WezTerm tabs.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d3-4"><span>Detach, open a fresh terminal, reattach, and confirm processes and layout survived.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d3-5"><span>Reload your tmux configuration and confirm the on-screen success message.</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-task="d3-6"><span>Complete ten minutes of real work using only keyboard navigation between windows and panes.</span></label></li>
+          </ul>
+
+          <div class="success">
+            <h3>Day 3 exit test</h3>
+            <ul>
+              <li>Use windows for tasks and panes only for closely related commands.</li>
+              <li>Detach and recover the full workspace without hesitation.</li>
+              <li>Choose the correct tmux host for local or remote persistence.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section reference" id="cheat-sheet">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Keep nearby</p>
+              <h2>Minimal cheat sheet</h2>
+            </div>
+          </div>
+
+          <div class="terminal">
+            <div class="terminal-bar"><i></i><i></i><i></i></div>
+            <pre><code>tmux new-session -A -s main</code></pre>
+          </div>
+
+          <div class="cheat-grid">
+            <div class="cheat-card">
+              <h3>Windows</h3>
+              <div class="cheat-row"><span>Ctrl+C</span><span>Create</span></div>
+              <div class="cheat-row"><span>r</span><span>Rename</span></div>
+              <div class="cheat-row"><span>1…9</span><span>Select</span></div>
+              <div class="cheat-row"><span>H / L</span><span>Previous / next</span></div>
+              <div class="cheat-row"><span>w</span><span>Choose</span></div>
+              <div class="cheat-row"><span>Ctrl+A</span><span>Last window</span></div>
+            </div>
+            <div class="cheat-card">
+              <h3>Panes</h3>
+              <div class="cheat-row"><span>v / s</span><span>Split left-right / top-bottom</span></div>
+              <div class="cheat-row"><span>h j k l</span><span>Navigate</span></div>
+              <div class="cheat-row"><span>z</span><span>Zoom</span></div>
+              <div class="cheat-row"><span>, . - =</span><span>Resize</span></div>
+              <div class="cheat-row"><span>x</span><span>Swap</span></div>
+              <div class="cheat-row"><span>c</span><span>Kill pane</span></div>
+            </div>
+            <div class="cheat-card">
+              <h3>Sessions</h3>
+              <div class="cheat-row"><span>Ctrl+D</span><span>Detach</span></div>
+              <div class="cheat-row"><span>S</span><span>Choose session</span></div>
+              <div class="cheat-row"><span>R</span><span>Reload config</span></div>
+            </div>
+            <div class="cheat-card">
+              <h3>Tools</h3>
+              <div class="cheat-row"><span>[</span><span>Copy mode</span></div>
+              <div class="cheat-row"><span>*</span><span>Synchronize panes</span></div>
+              <div class="cheat-row"><span>Prefix</span><span>Ctrl+Space</span></div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <strong>The lasting habit</strong>
+            <p>Start every terminal context with <code>tmux new-session -A -s main</code>. Use tmux windows for tasks, panes for closely related commands, WezTerm tabs for different domains, and Komorebi for desktop applications.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer>Progress is saved locally in this browser. Plan tailored to <code>~/.config/tmux/tmux.conf</code>.</footer>
+  </div>
+
+  <script>
+    (() => {
+      const storageKey = "tmux-training-plan-progress-v1";
+      const checks = [...document.querySelectorAll("input[data-task]")];
+      const label = document.getElementById("progress-label");
+      const bar = document.getElementById("progress-bar");
+      const reset = document.getElementById("reset-progress");
+
+      const load = () => {
+        try {
+          const completed = new Set(JSON.parse(localStorage.getItem(storageKey) || "[]"));
+          checks.forEach((check) => { check.checked = completed.has(check.dataset.task); });
+        } catch {
+          localStorage.removeItem(storageKey);
+        }
+      };
+
+      const update = () => {
+        const completed = checks.filter((check) => check.checked).map((check) => check.dataset.task);
+        const count = completed.length;
+        label.textContent = `${count} of ${checks.length} complete`;
+        bar.style.width = `${(count / checks.length) * 100}%`;
+        localStorage.setItem(storageKey, JSON.stringify(completed));
+      };
+
+      checks.forEach((check) => check.addEventListener("change", update));
+      reset.addEventListener("click", () => {
+        checks.forEach((check) => { check.checked = false; });
+        update();
+      });
+
+      load();
+      update();
+    })();
+  </script>
+</body>
+</html>
