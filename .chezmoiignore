@@ -4,6 +4,7 @@ Brewfile
 disable_lock.reg
 .pi/agent/auth.json
 .pi/agent/sessions/
+.omp/agent/skills/using-agent-skills/**
 {{ if ne .chezmoi.os "windows" }}
 AppData/
 windows_reg_files/

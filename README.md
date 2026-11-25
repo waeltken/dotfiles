@@ -295,6 +295,19 @@ fish -c "curl -sL https://git.io/fisher | source && fisher update"
 
 The declared plugin set lives in `dot_config/fish/fish_plugins`.
 
+### Atuin
+
+`dot_config/private_atuin/private_config.toml` turns on the Atuin daemon (started on demand through `daemon.autostart`) and thread capture, so omp, opencode and Copilot sessions sync as searchable, resumable threads. `run_onchange_after_atuin-agent-hooks.sh.tmpl` runs `atuin setup --only --agent-history --agents omp,opencode,copilot`, which writes the generated hooks that record the commands those agents run. It re-runs when the atuin or opencode version changes. After the first apply, log in, import existing sessions and restart the agents:
+
+```sh
+atuin login
+atuin threads import --harness omp
+atuin threads import --harness opencode
+atuin threads import --harness copilot
+```
+
+Agent commands are hidden from interactive search; list them with `atuin search --author '$all-agent' -- ''`, and threads with `atuin threads list` or `atuin resume`.
+
 ### Accounts and local secrets
 
 - Import or create the selected GPG key before reapplying with commit signing enabled.
@@ -430,7 +443,7 @@ For Windows + WSL, run both the Linux checks inside Ubuntu and the Windows check
 ├── Brewfile                     # macOS/Linux package manifest
 ├── .chezmoi.toml.tmpl           # First-run prompts and data
 ├── .chezmoiignore               # Platform and secret exclusions
-└── .chezmoiexternal.toml        # External assets such as TPM
+└── .chezmoiexternal.toml        # External assets: TPM, agent-skills for OMP
 ```
 
 ## Intentional exceptions

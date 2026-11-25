@@ -2,3 +2,13 @@
   type = "git-repo"
   url = "https://github.com/tmux-plugins/tpm"
   refreshPeriod = "1h"
+
+# addyosmani/agent-skills: one dir per skill under ~/.omp/agent/skills.
+# using-agent-skills is skipped via .chezmoiignore (an exclude here would
+# defeat include): omp routes skills by description natively.
+[".omp/agent/skills"]
+  type = "archive"
+  url = "https://github.com/addyosmani/agent-skills/archive/refs/heads/main.tar.gz"
+  stripComponents = 2
+  include = ["*/skills/**"]
+  refreshPeriod = "168h"
