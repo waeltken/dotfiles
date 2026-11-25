@@ -134,9 +134,10 @@ irm get.scoop.sh | iex
 scoop bucket add extras
 scoop install git chezmoi neovim wezterm komorebi yasb oh-my-posh
 winget install --id LGUG2Z.whkd -e
+winget install --id Atuinsh.Atuin -e
 ```
 
-There is no Scoop manifest in this repository, so the package list is explicit. whkd comes from winget rather than Scoop because enterprise Defender policies can block the Scoop shim (`scoop\shims\whkd.exe`); the MSI puts the real binary on `PATH`. The Homebrew `Brewfile` does not install Windows GUI applications.
+There is no Scoop manifest in this repository, so the package list is explicit. whkd and Atuin come from winget rather than Scoop because enterprise Defender policies can block Scoop shims (`scoop\shims\whkd.exe`); the MSI puts the real binary on `PATH`. The Homebrew `Brewfile` does not install Windows GUI applications.
 
 ### 2. Apply the Windows configuration
 
@@ -307,6 +308,8 @@ atuin threads import --harness copilot
 ```
 
 Agent commands are hidden from interactive search; list them with `atuin search --author '$all-agent' -- ''`, and threads with `atuin threads list` or `atuin resume`.
+
+The GitHub Copilot app is a Windows program that keeps its sessions in `%USERPROFILE%\.copilot`, so it needs native Atuin. Install it with winget (`winget install --id Atuinsh.Atuin -e`; Scoop shims are blocked), apply chezmoi natively so `%USERPROFILE%\.config\atuin\config.toml` exists before Atuin first runs (otherwise Atuin creates `%USERPROFILE%\.atuin\config.toml`, which shadows it), then run the same `atuin login` and `atuin threads import --harness copilot` in PowerShell. `run_onchange_after_atuin-agent-hooks.ps1.tmpl` installs the Copilot hook there.
 
 ### Accounts and local secrets
 

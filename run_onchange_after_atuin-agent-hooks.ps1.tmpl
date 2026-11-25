@@ -1,0 +1,9 @@
+{{- if and (eq .chezmoi.os "windows") (lookPath "atuin") -}}
+# Installs Atuin's command-history hook for Copilot (CLI and the GitHub Copilot app).
+# The generated hook embeds atuin's absolute path, so it is generated, not managed.
+# Re-runs when the atuin version changes:
+# atuin: {{ output "atuin" "--version" | trim }}
+$ErrorActionPreference = 'Stop'
+atuin setup --only --agent-history --agents copilot
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+{{- end -}}
