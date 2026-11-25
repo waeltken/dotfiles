@@ -12,7 +12,6 @@ if status is-interactive
     set -gx DISPLAY :0
 
     # Shell plugins and completions
-    {{ if eq .chezmoi.arch "amd64" }}
     # Plugin initialization guarded by availability
     if type -q navi
         navi widget fish | source
@@ -32,7 +31,6 @@ if status is-interactive
     if type -q pack
         source (pack completion --shell fish)
     end
-    {{ end }}
 
     # Add paths
     {{ if eq .chezmoi.os "darwin" }}
