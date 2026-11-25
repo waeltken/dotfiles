@@ -1,0 +1,13 @@
+{{- if and (ne .chezmoi.os "windows") (lookPath "atuin") -}}
+#!/bin/bash
+# Installs Atuin's command-history hooks for omp, opencode and Copilot.
+# The generated plugins embed atuin's absolute path and depend on the
+# installed atuin and opencode versions, so they are generated, not managed.
+# Re-runs when either version changes:
+# atuin: {{ output "atuin" "--version" | trim }}
+{{- if lookPath "opencode" }}
+# opencode: {{ output "opencode" "--version" | trim }}
+{{- end }}
+set -euo pipefail
+atuin setup --only --agent-history --agents omp,opencode,copilot
+{{- end -}}

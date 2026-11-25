@@ -37,8 +37,8 @@
 # sync_frequency = "10m"
 
 ## which search mode to use
-## possible values: prefix, fulltext, fuzzy, skim
-# search_mode = "fuzzy"
+## possible values: prefix, fulltext, fuzzy, daemon-fuzzy
+search_mode = "daemon-fuzzy"
 
 ## which filter mode to use
 ## possible values: global, host, session, directory
@@ -206,11 +206,11 @@ enter_accept = true
 # strategy = "auto"
 
 [daemon]
-
-[ai]
+## Enables using the daemon to sync. Thread capture needs it.
 enabled = true
-## Enables using the daemon to sync. Requires the daemon to be running in the background. Start it with `atuin daemon`
-# enabled = false
+
+## Start the daemon on demand, so no systemd unit or Windows service is needed
+autostart = true
 
 ## How often the daemon should sync in seconds
 # sync_frequency = 300
@@ -227,3 +227,10 @@ enabled = true
 
 ## The port that should be used for TCP on non unix systems
 # tcp_port = 8889
+
+[ai]
+enabled = true
+
+[threads]
+## Capture omp, opencode and Copilot sessions as synced threads
+capture = true
